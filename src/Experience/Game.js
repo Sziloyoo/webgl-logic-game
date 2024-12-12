@@ -2,6 +2,9 @@ import Controls from "./Controls";
 
 export default class Game{
     constructor(){
+        // States
+        this.selectedRing = 3
+
         this.controls = new Controls()
 
         // Control events
@@ -13,19 +16,17 @@ export default class Game{
 
     // Events
     upEvent = () => {
-        console.log("up pressed")
+        if(this.selectedRing >= 3) return
+        this.selectedRing++
     }
     downEvent = () => {
-        console.log("down pressed")
+        if(this.selectedRing <= 1) return
+        this.selectedRing--
     }
     leftEvent = () => {
         console.log("left pressed")
     }
     rightEvent = () => {
         console.log("right pressed")
-    }
-
-    update(){
-        
     }
 }

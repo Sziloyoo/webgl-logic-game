@@ -14,7 +14,9 @@ export default class World
         this.debug = this.experience.debug
 
         // Game obejcts
-        this.ringContainer = new Array(3).fill(null)
+        this.ringContainer = new Array(3)
+        this.ready = false
+
         // Debug
         if(this.debug.active)
         {
@@ -34,7 +36,6 @@ export default class World
     setWorldAxes(){
         this.origin = new THREE.AxesHelper(1)
         this.scene.add(this.origin)
-        this.origin.visible = true
 
         //Debug
         if(this.debug.active)
@@ -50,13 +51,14 @@ export default class World
             const ring = new Ring(i + 1)
             this.scene.add(ring.gameObject)
             this.ringContainer[i] = ring
-
         }
-        console.log(this.ringContainer)
+        this.ready = true
     }
 
     update()
     {
-
+        this.ringContainer.forEach((ring, index) => {
+            if(ring) ring.update()
+        })
     }
 }
