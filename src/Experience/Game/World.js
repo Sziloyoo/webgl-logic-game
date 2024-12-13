@@ -5,7 +5,7 @@ import * as THREE from 'three'
 
 export default class World
 {
-    constructor()
+    constructor(numberOfRings)
     {
         // References
         this.experience = new Experience()
@@ -13,9 +13,20 @@ export default class World
         this.resources = this.experience.resources
         this.debug = this.experience.debug
 
-        // Game obejcts
-        this.ringContainer = new Array(3)
-        this.ready = false
+        // Game objects
+        this.ringContainer = new Map()
+
+        // Events
+        this.rotateRing = (index, dirLeft) => {
+            const ring = this.ringContainer.get(index)
+            dirLeft ? ring.rotateLeft() : ring.rotateRight()
+        }
+
+        this.setRingActive = (num) => {
+            this.ringContainer.forEach((ring, index) => {
+                index == num ? ring.active = true : ring.active = false
+            })
+        }
 
         // Debug
         if(this.debug.active)
@@ -29,7 +40,7 @@ export default class World
             // Setup
             this.environment = new Environment()
             this.setWorldAxes()
-            this.initScene()
+            this.initScene(numberOfRings)
         })
     }
 
@@ -46,13 +57,12 @@ export default class World
         }
     }
 
-    initScene(){
-        for(let i = 0; i < this.ringContainer.length; i++){
-            const ring = new Ring(i + 1)
+    initScene(numberOfRings){
+        for(let i = 1; i <= numberOfRings; i++){
+            const ring = numberOfRings == i ? new Ring(i, true) : new Ring(i, false)
             this.scene.add(ring.gameObject)
-            this.ringContainer[i] = ring
+            this.ringContainer.set(i, ring)
         }
-        this.ready = true
     }
 
     update()
