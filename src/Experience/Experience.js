@@ -72,10 +72,10 @@ export default class Experience {
         this.world.setRingActive(this.gameState.selectedRing)
     }
     leftEvent = () => {
-        
+        this.world.rotateRing(this.gameState.selectedRing, true)
     }
     rightEvent = () => {
-
+        this.world.rotateRing(this.gameState.selectedRing, false)
     }
 
     // Application events

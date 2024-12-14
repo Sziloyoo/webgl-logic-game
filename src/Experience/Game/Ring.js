@@ -8,24 +8,24 @@ export default class Ring {
         this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00, wireframe: true })
 
         // States
-        this.active = false
+        this.active = defaultSelected ? true : false
 
         // GameObject
         this.gameObject = this.createObject(size, defaultSelected)
 
         // Rotate events
         this.rotateLeft = () => {
-            gsap.to(laserCircle.rotation, {
+            gsap.to(this.gameObject.rotation, {
                 duration: .3,
-                z: laserCircle.rotation.z + Math.PI / 6,
+                z: this.gameObject.rotation.z + Math.PI / 6,
                 ease: 'power2.inOut'
             })
         }
 
         this.rotateRight = () => {
-            gsap.to(laserCircle.rotation, {
+            gsap.to(this.gameObject.rotation, {
                 duration: .3,
-                z: laserCircle.rotation.z - Math.PI / 6,
+                z: this.gameObject.rotation.z - Math.PI / 6,
                 ease: 'power2.inOut'
             })
         }
