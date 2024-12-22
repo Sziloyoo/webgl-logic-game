@@ -5,7 +5,7 @@ export default class Ring {
     constructor(size, defaultSelected) {
         // Materials
         this.activeMaterial = new THREE.MeshBasicMaterial({ color: 0xFFEA00 })
-        this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00, wireframe: true })
+        this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00 })
 
         // States
         this.active = defaultSelected ? true : false
