@@ -28,8 +28,9 @@ export default class Experience {
 
         // Game states
         this.gameState = {
-            numberOfRigns: 3,
-            selectedRing: 3
+            numberOfRings: 3,
+            selectedRing: 3,
+            socketIndexes: [2, 6, 9, 11]
         }
 
         // Setup
@@ -40,7 +41,7 @@ export default class Experience {
         this.resources = new Resources(sources)
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.world = new World(this.gameState.numberOfRigns)
+        this.world = new World(this.gameState)
 
         // Control events
         this.controls = new Controls()

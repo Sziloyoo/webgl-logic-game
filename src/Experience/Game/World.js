@@ -1,11 +1,12 @@
 import Experience from '../Experience.js'
 import Environment from './Environment.js'
 import Ring from './Ring.js'
+import Socket from './Socket.js'
 import * as THREE from 'three'
 
 export default class World
 {
-    constructor(numberOfRings)
+    constructor({numberOfRings, socketIndexes})
     {
         // References
         this.experience = new Experience()
@@ -15,6 +16,7 @@ export default class World
 
         // Game objects
         this.ringContainer = new Map()
+        this.socketContainer = new Map()
 
         // Events
         this.rotateRing = (index, dirLeft) => {
@@ -40,7 +42,8 @@ export default class World
             // Setup
             this.environment = new Environment()
             this.setWorldAxes()
-            this.initScene(numberOfRings)
+            this.initRings(numberOfRings)
+            this.initSockets(socketIndexes, numberOfRings)
         })
     }
 
@@ -57,7 +60,7 @@ export default class World
         }
     }
 
-    initScene(numberOfRings){
+    initRings(numberOfRings){
         for(let i = 1; i <= numberOfRings; i++){
             const ring = numberOfRings == i ? new Ring(i, true) : new Ring(i, false)
             this.scene.add(ring.gameObject)
@@ -65,10 +68,28 @@ export default class World
         }
     }
 
+    initSockets(socketIndexes, numberOfRings){
+        const radius = numberOfRings + 1
+        for (const index of socketIndexes) {
+            const angle = (index * Math.PI * 2) / 12
+            const x = radius * Math.cos(angle)
+            const y = radius * Math.sin(angle)
+
+            const socket = new Socket()
+            socket.gameObject.position.set(x, y, 0)
+            this.scene.add(socket.gameObject)
+            this.socketContainer.set(index, socket)
+        }
+    }
+
     update()
     {
         this.ringContainer.forEach((ring, index) => {
             if(ring) ring.update()
+        })
+
+        this.socketContainer.forEach((socket, index) => {
+            if(socket) socket.update()
         })
     }
 }
