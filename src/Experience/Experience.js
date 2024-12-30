@@ -63,7 +63,7 @@ export default class Experience {
 
     // Control functions
     upEvent = () => {
-        if(this.gameState.selectedRing >= this.gameState.numberOfRigns) return
+        if(this.gameState.selectedRing >= this.gameState.numberOfRings) return
         this.gameState.selectedRing++
         this.world.setRingActive(this.gameState.selectedRing)
     }
