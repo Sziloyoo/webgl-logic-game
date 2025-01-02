@@ -6,12 +6,13 @@ import * as THREE from 'three'
 
 export default class World
 {
-    constructor({numberOfRings, socketIndexes})
+    constructor({numberOfRings, selectedRing, socketIndexes, ringObjects})
     {
         // References
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.colliders = []
         this.debug = this.experience.debug
 
         // Game objects
@@ -42,7 +43,7 @@ export default class World
             // Setup
             this.environment = new Environment()
             this.setWorldAxes()
-            this.initRings(numberOfRings)
+            this.initRings(numberOfRings, selectedRing, ringObjects)
             this.initSockets(socketIndexes, numberOfRings)
         })
     }
@@ -60,9 +61,10 @@ export default class World
         }
     }
 
-    initRings(numberOfRings){
+    initRings(numberOfRings, selectedRing, ringObjects){
         for(let i = 1; i <= numberOfRings; i++){
-            const ring = numberOfRings == i ? new Ring(i, true) : new Ring(i, false)
+            const objects = ringObjects[i]
+            const ring = selectedRing == i ? new Ring(i, true, objects, this.colliders) : new Ring(i, false, objects, this.colliders)
             this.scene.add(ring.gameObject)
             this.ringContainer.set(i, ring)
         }
@@ -79,13 +81,14 @@ export default class World
             socket.gameObject.position.set(x, y, 0)
             this.scene.add(socket.gameObject)
             this.socketContainer.set(index, socket)
+            this.colliders.push(socket.gameObject)
         }
     }
 
     update()
     {
         this.ringContainer.forEach((ring, index) => {
-            if(ring) ring.update()
+            if(ring) ring.update(this.colliders)
         })
 
         this.socketContainer.forEach((socket, index) => {
