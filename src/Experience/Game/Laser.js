@@ -1,35 +1,37 @@
 import * as THREE from 'three'
 
 export default class Laser {
-    constructor(position) {
+    constructor(position, angle) {
         // Create go
         this.gameObject = new THREE.Object3D()
-        this.gameObject.position.copy(position)
 
         // Create laser
         this.raycaster = new THREE.Raycaster()
-        this.maxRayLength = 24
+        this.maxRayLength = 64
         this.rayLength = this.maxRayLength
         this.rayPlane = this.createRayPlane(this.maxRayLength)
+        this.rayPlane.position.copy(position)
+        this.rayPlane.rotation.z = angle + Math.PI/2
         this.gameObject.add(this.rayPlane)
 
         // Raycast helper
         this.helper = new THREE.ArrowHelper(
-            new THREE.Vector3(0, 0, 0),             // Placeholder direction
-            new THREE.Vector3(0, 0, 0),             // Placeholder origin
-            2,                                      // Length of the arrow
-            0x00FF00                                // Color
+            this.getLaserDirection(position),
+            position,
+            2,
+            0x00FF00
         )
-        this.gameObject.add(this.helper)
+        //this.gameObject.add(this.helper)
 
         // Create collider
         this.collider = this.createCollider(0.2, true)
+        this.collider.position.copy(position)
         this.gameObject.add(this.collider)
 
         this.update = (colliderArray) => {
             // Calculate new vectors
             const worldPosition = new THREE.Vector3()
-            this.gameObject.getWorldPosition(worldPosition)
+            this.collider.getWorldPosition(worldPosition)
 
             const directionToOrigin = new THREE.Vector3(0, 0, 0).sub(worldPosition).normalize()
 
@@ -37,15 +39,13 @@ export default class Laser {
             this.raycaster.ray.origin.copy(worldPosition)
             this.raycaster.ray.direction.copy(directionToOrigin)
 
-            // Update helper
-            this.helper.setDirection(directionToOrigin)
-
             // Test intersections
             const intersections = this.raycaster.intersectObjects(colliderArray)
 
             // Update the laser
             if (intersections.length > 0) {
                 this.rayLength = intersections[0].distance // Set ray length to the nearest hit
+                console.log(intersections[0])
             }
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
 
@@ -54,10 +54,10 @@ export default class Laser {
     }
 
     createRayPlane(maxRayLength) {
-        const rayPlaneGeometry = new THREE.PlaneGeometry(0.1, maxRayLength)
+        const rayPlaneGeometry = new THREE.PlaneGeometry(0.05, maxRayLength)
         rayPlaneGeometry.translate(0, maxRayLength / 2, 0)
 
-        const rayPlaneMesh = new THREE.Mesh(rayPlaneGeometry, new THREE.MeshBasicMaterial({ visible: false }))
+        const rayPlaneMesh = new THREE.Mesh(rayPlaneGeometry, new THREE.MeshBasicMaterial({ visible: true }))
         rayPlaneMesh.rotation.z = Math.PI
 
         return rayPlaneMesh
@@ -70,11 +70,8 @@ export default class Laser {
         return new THREE.Mesh(boxGeometry, colliderMaterial)
     }
 
-    lookAt(origin, target) {
-        const direction = new THREE.Vector3();
-        direction.subVectors(target, origin).normalize();
-
-        return direction;
+    getLaserDirection(position){
+        return new THREE.Vector3(-position.x, -position.y, 0).normalize()
     }
 }
 

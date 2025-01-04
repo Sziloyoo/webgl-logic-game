@@ -83,7 +83,7 @@ export default class Ring {
                 return new Blocker(this.getPosition(index))
                 break
             case "laser":
-                return new Laser(this.getPosition(index))
+                return new Laser(this.getPosition(index), this.getAngle(index))
                 break
         }
     }
@@ -94,6 +94,9 @@ export default class Ring {
         const y = this.size * Math.sin(angle)
 
         return new THREE.Vector3(x, y, 0)
+    }
 
+    getAngle(index){
+        return (index * Math.PI * 2) / 12
     }
 }

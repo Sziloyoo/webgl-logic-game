@@ -77,7 +77,7 @@ export default class World
             const x = radius * Math.cos(angle)
             const y = radius * Math.sin(angle)
 
-            const socket = new Socket()
+            const socket = new Socket(index)
             socket.gameObject.position.set(x, y, 0)
             this.scene.add(socket.gameObject)
             this.socketContainer.set(index, socket)

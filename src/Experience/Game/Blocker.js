@@ -12,7 +12,7 @@ export default class Blocker{
 
     createBlocker(){
         const geo = new THREE.BoxGeometry(0.3, 0.3, 0.3)
-        const material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
+        const material = new THREE.MeshBasicMaterial({ color: 0x00FFFF, wireframe: false })
         return new THREE.Mesh(geo, material)
     }
 }
