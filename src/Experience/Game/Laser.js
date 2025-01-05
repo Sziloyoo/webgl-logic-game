@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 
 export default class Laser {
-    constructor(position, angle) {
+    constructor(position, angle, index) {
         // Create go
         this.gameObject = new THREE.Object3D()
 
         // Create laser
         this.raycaster = new THREE.Raycaster()
-        this.maxRayLength = 64
+        this.maxRayLength = 9
         this.rayLength = this.maxRayLength
         this.rayPlane = this.createRayPlane(this.maxRayLength)
         this.rayPlane.position.copy(position)
@@ -26,6 +26,7 @@ export default class Laser {
         // Create collider
         this.collider = this.createCollider(0.2, true)
         this.collider.position.copy(position)
+        this.collider.name = `laser-${index}`
         this.gameObject.add(this.collider)
 
         this.update = (colliderArray) => {
@@ -43,10 +44,8 @@ export default class Laser {
             const intersections = this.raycaster.intersectObjects(colliderArray)
 
             // Update the laser
-            if (intersections.length > 0) {
-                this.rayLength = intersections[0].distance // Set ray length to the nearest hit
-                console.log(intersections[0])
-            }
+            if (intersections.length > 0) this.rayLength = intersections[0].distance // Set ray length to the nearest hit
+            else this.rayLength = this.maxRayLength // without intersection reset to max length
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
 
             // TODO -> update laser shader!
@@ -72,6 +71,10 @@ export default class Laser {
 
     getLaserDirection(position){
         return new THREE.Vector3(-position.x, -position.y, 0).normalize()
+    }
+
+    getAngle(index){
+        return (index * Math.PI * 2) / 12
     }
 }
 

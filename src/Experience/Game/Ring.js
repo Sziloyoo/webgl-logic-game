@@ -80,10 +80,10 @@ export default class Ring {
     createSingleObject(objectName, index) {
         switch (objectName) {
             case "blocker":
-                return new Blocker(this.getPosition(index))
+                return new Blocker(this.getPosition(index), index)
                 break
             case "laser":
-                return new Laser(this.getPosition(index), this.getAngle(index))
+                return new Laser(this.getPosition(index), this.getAngle(index), index)
                 break
         }
     }

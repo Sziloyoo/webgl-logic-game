@@ -30,11 +30,11 @@ export default class Experience {
         this.gameState = {
             numberOfRings: 3,
             selectedRing: 3,
-            socketIndexes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            socketIndexes: [0, 2, 6, 7, 9, 11],
             ringObjects: {
-                1: ['empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
-                2: ['laser', 'empty', 'empty', 'empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
-                3: ['empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
+                1: ['empty', 'empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'empty', 'empty'],
+                2: ['laser', 'empty', 'empty', 'empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'empty', 'blocker'],
+                3: ['empty', 'empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'empty', 'blocker', 'empty', 'empty'],
             }
         }
 

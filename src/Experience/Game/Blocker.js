@@ -1,9 +1,10 @@
 import * as THREE from 'three'
 
 export default class Blocker{
-    constructor(position){
+    constructor(position, index){
         this.gameObject = this.createBlocker()
         this.gameObject.position.copy(position)
+        this.gameObject.name = `blocker-${index}`
         
         this.update = () => {
             this.gameObject.lookAt(0, 0, 0)
