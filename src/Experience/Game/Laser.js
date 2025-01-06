@@ -14,6 +14,8 @@ export default class Laser {
         this.rayPlane.rotation.z = angle + Math.PI / 2
         this.gameObject.add(this.rayPlane)
 
+        this.intersection = null
+
         // Raycast helper
         this.helper = new THREE.ArrowHelper(
             this.getLaserDirection(position),
@@ -31,27 +33,37 @@ export default class Laser {
         this.gameObject.add(this.collider)
 
         this.update = (colliderArray) => {
-            // Calculate new vectors
+            // Calculate new vectors the raycaster
             const worldPosition = new THREE.Vector3()
             this.collider.getWorldPosition(worldPosition)
-
             const directionToOrigin = new THREE.Vector3(0, 0, 0).sub(worldPosition).normalize()
 
-            // Update raycaster
+            // Update raycaster and intersections
             this.raycaster.ray.origin.copy(worldPosition)
             this.raycaster.ray.direction.copy(directionToOrigin)
-
-            // Test intersections
             const intersections = this.raycaster.intersectObjects(colliderArray)
 
-            // Update the laser
+            // Evaluate intersections
             if (intersections.length > 0) {
                 this.rayLength = intersections[0].distance // Set ray length to the nearest hit
-                this.handleIntersect(intersections[0].object.userData.GO)
-            }
-            else this.rayLength = this.maxRayLength // without intersection reset to max length
-            this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
 
+                if(this.intersection != intersections[0].object){
+                    if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+                    
+                    this.intersection = intersections[0].object
+                    if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.activate() }
+                }
+            }
+            else {
+                this.rayLength = this.maxRayLength // Without intersection reset to max length
+
+                if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+
+                this.intersection = null
+            }
+
+            // Update laser plane
+            this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
             // TODO -> update laser shader!
         }
 
@@ -81,22 +93,6 @@ export default class Laser {
 
     getAngle(index) {
         return (index * Math.PI * 2) / 12
-    }
-
-    handleIntersect(GO){
-        const type = GO?.getType()
-        console.log(`Currently handling: ${GO.getType()}`)
-        switch(type){
-            case "Laser":
-                console.log("Laser")
-                break
-            case "Socket":
-                GO.setActive()
-                break
-            case "Blocker":
-                console.log("Blocker")
-                break
-        }
     }
 }
 

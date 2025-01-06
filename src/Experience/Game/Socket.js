@@ -17,9 +17,8 @@ export default class Socket{
             else this.gameObject.material = this.inactiveMaterial
         }
 
-        this.setActive = () => {
-            this.active = true
-        }
+        this.activate = () => this.active = true
+        this.deactivate = () => this.active = false
 
         this.getType = () => this.constructor.name
     }
