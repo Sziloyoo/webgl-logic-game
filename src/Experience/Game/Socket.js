@@ -9,12 +9,19 @@ export default class Socket{
 
         this.gameObject = this.createStocket()
         this.gameObject.name = `socket-${index}`
+        this.gameObject.userData.GO = this
 
         this.update = () => {
             this.gameObject.lookAt(0, 0, 0)
             if(this.active) this.gameObject.material = this.activeMaterial
             else this.gameObject.material = this.inactiveMaterial
         }
+
+        this.setActive = () => {
+            this.active = true
+        }
+
+        this.getType = () => this.constructor.name
     }
 
     createStocket(){

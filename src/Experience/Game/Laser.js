@@ -11,7 +11,7 @@ export default class Laser {
         this.rayLength = this.maxRayLength
         this.rayPlane = this.createRayPlane(this.maxRayLength)
         this.rayPlane.position.copy(position)
-        this.rayPlane.rotation.z = angle + Math.PI/2
+        this.rayPlane.rotation.z = angle + Math.PI / 2
         this.gameObject.add(this.rayPlane)
 
         // Raycast helper
@@ -27,6 +27,7 @@ export default class Laser {
         this.collider = this.createCollider(0.2, true)
         this.collider.position.copy(position)
         this.collider.name = `laser-${index}`
+        this.collider.userData.GO = this
         this.gameObject.add(this.collider)
 
         this.update = (colliderArray) => {
@@ -44,12 +45,17 @@ export default class Laser {
             const intersections = this.raycaster.intersectObjects(colliderArray)
 
             // Update the laser
-            if (intersections.length > 0) this.rayLength = intersections[0].distance // Set ray length to the nearest hit
+            if (intersections.length > 0) {
+                this.rayLength = intersections[0].distance // Set ray length to the nearest hit
+                this.handleIntersect(intersections[0].object.userData.GO)
+            }
             else this.rayLength = this.maxRayLength // without intersection reset to max length
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
 
             // TODO -> update laser shader!
         }
+
+        this.getType = () => this.constructor.name
     }
 
     createRayPlane(maxRayLength) {
@@ -69,12 +75,28 @@ export default class Laser {
         return new THREE.Mesh(boxGeometry, colliderMaterial)
     }
 
-    getLaserDirection(position){
+    getLaserDirection(position) {
         return new THREE.Vector3(-position.x, -position.y, 0).normalize()
     }
 
-    getAngle(index){
+    getAngle(index) {
         return (index * Math.PI * 2) / 12
+    }
+
+    handleIntersect(GO){
+        const type = GO?.getType()
+        console.log(`Currently handling: ${GO.getType()}`)
+        switch(type){
+            case "Laser":
+                console.log("Laser")
+                break
+            case "Socket":
+                GO.setActive()
+                break
+            case "Blocker":
+                console.log("Blocker")
+                break
+        }
     }
 }
 

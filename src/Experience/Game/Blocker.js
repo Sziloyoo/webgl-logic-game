@@ -5,10 +5,13 @@ export default class Blocker{
         this.gameObject = this.createBlocker()
         this.gameObject.position.copy(position)
         this.gameObject.name = `blocker-${index}`
+        this.gameObject.userData.GO = this
         
         this.update = () => {
             this.gameObject.lookAt(0, 0, 0)
         }
+
+        this.getType = () => this.constructor.name
     }
 
     createBlocker(){
