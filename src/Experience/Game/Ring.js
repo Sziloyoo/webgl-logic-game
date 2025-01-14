@@ -72,7 +72,7 @@ export default class Ring {
             this.gameObject.add(obj.gameObject)
 
             // Add colliders into the collider array
-            if(objName == "blocker") colliderArray.push(obj.gameObject)
+            if(objName == "blocker") colliderArray.push(obj.collider)
             if(objName == "laser") colliderArray.push(obj.collider)
         }
     }
@@ -80,11 +80,9 @@ export default class Ring {
     createSingleObject(objectName, index) {
         switch (objectName) {
             case "blocker":
-                return new Blocker(this.getPosition(index), index)
-                break
+                return new Blocker(this.getPosition(index), this.getAngle(index), index)
             case "laser":
                 return new Laser(this.getPosition(index), this.getAngle(index), index)
-                break
         }
     }
 

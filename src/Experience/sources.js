@@ -91,4 +91,12 @@ export default [
             'models/blocker.glb'
         ]
     },
+    {
+        name: 'envMap',
+        type: 'hdr',
+        path:
+        [
+            'textures/rogland_clear_night_1k.hdr'
+        ]
+    }
 ]

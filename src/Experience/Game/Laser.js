@@ -23,7 +23,6 @@ export default class Laser {
             2,
             0x00FF00
         )
-        //this.gameObject.add(this.helper)
 
         // Create collider
         this.collider = this.createCollider(0.2, true)
@@ -89,10 +88,6 @@ export default class Laser {
 
     getLaserDirection(position) {
         return new THREE.Vector3(-position.x, -position.y, 0).normalize()
-    }
-
-    getAngle(index) {
-        return (index * Math.PI * 2) / 12
     }
 }
 
