@@ -18,13 +18,14 @@ export default class GlassMaterial{
         this.envMap = this.resources.items.envMap
         this.envMap.mapping = THREE.EquirectangularReflectionMapping
 
-        this.material = new THREE.MeshStandardMaterial({
+        this.material = new THREE.MeshPhysicalMaterial({
             transparent: true,
-            alphaMap: this.alphaMap,
+            transmissionMap: this.alphaMap,
+            transmission: 1.0,
+            opacity: 1.0,
             normalMap: this.normalMap,
             aoMap: this.aormMap,
-            roughnessMap: this.aormMap,
-            metalnessMap: this.aormMap
+            roughnessMap: this.aormMap
         })
     }
 
