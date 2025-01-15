@@ -14,7 +14,7 @@ export default class Socket {
         this.gameObject = this.createStocket()
 
         // Create collider
-        this.collider = this.createCollider(0.1, true)
+        this.collider = this.createCollider(0.1, false)
         this.collider.position.z = -z_offset/4
         this.collider.name = `socket-${index}`
         this.collider.userData.GO = this

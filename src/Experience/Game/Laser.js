@@ -1,7 +1,13 @@
 import * as THREE from 'three'
+import Experience from '../Experience'
+import AtlasMaterial from './Materials/AtlasMaterial'
+import LaserMaterial from './Materials/LaserMaterial'
 
 export default class Laser {
-    constructor(position, angle, index) {
+    constructor(position, angle, index, ringSize) {
+        this.experience = new Experience()
+        this.resources = this.experience.resources
+
         // Create go
         this.gameObject = new THREE.Object3D()
 
@@ -16,13 +22,19 @@ export default class Laser {
 
         this.intersection = null
 
-        // Raycast helper
+        /* // Raycast helper
         this.helper = new THREE.ArrowHelper(
             this.getLaserDirection(position),
             position,
             2,
             0x00FF00
-        )
+        ) */
+
+        // Create modell
+        this.laserModel = this.createModel()
+        this.laserModel.position.copy(position)
+        this.laserModel.rotation.z = angle + Math.PI / 2
+        this.gameObject.add(this.laserModel)
 
         // Create collider
         this.collider = this.createCollider(0.2, true)
@@ -46,34 +58,37 @@ export default class Laser {
             if (intersections.length > 0) {
                 this.rayLength = intersections[0].distance // Set ray length to the nearest hit
 
-                if(this.intersection != intersections[0].object){
-                    if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
-                    
+                if (this.intersection != intersections[0].object) {
+                    if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+
                     this.intersection = intersections[0].object
-                    if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.activate() }
+                    if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.activate() }
                 }
             }
             else {
                 this.rayLength = this.maxRayLength // Without intersection reset to max length
 
-                if(this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+                if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
 
                 this.intersection = null
             }
 
             // Update laser plane
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
-            // TODO -> update laser shader!
+            this.rayPlane.material.uniforms.u_time.value = this.experience.time.elapsed / 1000
+            this.rayPlane.material.uniforms.u_length.value = this.rayLength
         }
 
         this.getType = () => this.constructor.name
     }
 
     createRayPlane(maxRayLength) {
-        const rayPlaneGeometry = new THREE.PlaneGeometry(0.05, maxRayLength)
+        const rayPlaneGeometry = new THREE.PlaneGeometry(0.5, maxRayLength)
         rayPlaneGeometry.translate(0, maxRayLength / 2, 0)
 
-        const rayPlaneMesh = new THREE.Mesh(rayPlaneGeometry, new THREE.MeshBasicMaterial({ visible: true }))
+        const laserMaterial = new LaserMaterial(maxRayLength)
+
+        const rayPlaneMesh = new THREE.Mesh(rayPlaneGeometry, laserMaterial.getMaterial())
         rayPlaneMesh.rotation.z = Math.PI
 
         return rayPlaneMesh
@@ -84,6 +99,18 @@ export default class Laser {
         const colliderMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true, visible: visible ? true : false })
 
         return new THREE.Mesh(boxGeometry, colliderMaterial)
+    }
+
+    createModel() {
+        const laserModel = this.resources.items.laserModel.scene.clone()
+
+        laserModel.scale.x = 3
+        laserModel.scale.z = 3
+        laserModel.scale.y = 3
+
+        laserModel.children[0].material = new AtlasMaterial().getMaterial()
+        return laserModel
+
     }
 
     getLaserDirection(position) {

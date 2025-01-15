@@ -82,7 +82,7 @@ export default class Ring {
             case "blocker":
                 return new Blocker(this.getPosition(index), this.getAngle(index), index)
             case "laser":
-                return new Laser(this.getPosition(index), this.getAngle(index), index)
+                return new Laser(this.getPosition(index), this.getAngle(index), index, this.size)
         }
     }
 

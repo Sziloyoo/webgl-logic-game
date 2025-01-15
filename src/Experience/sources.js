@@ -5,7 +5,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/noise.jpg'
+            'textures/noise.png'
         ]
     },
     // Atlas textures
