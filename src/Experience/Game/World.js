@@ -103,7 +103,6 @@ export default class World {
 
     initAssets() {
         const ringModel = this.resources.items.ringModel.scene
-        ringModel.rotation.x += Math.PI / 2
         ringModel.scale.x = 3
         ringModel.scale.z = 3
         ringModel.scale.y = 3

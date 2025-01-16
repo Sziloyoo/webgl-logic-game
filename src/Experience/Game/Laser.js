@@ -104,9 +104,9 @@ export default class Laser {
     createModel() {
         const laserModel = this.resources.items.laserModel.scene.clone()
 
-        laserModel.scale.x = 3
-        laserModel.scale.z = 3
-        laserModel.scale.y = 3
+        laserModel.scale.x = 2
+        laserModel.scale.z = 2
+        laserModel.scale.y = 2
 
         laserModel.children[0].material = new AtlasMaterial().getMaterial()
         return laserModel

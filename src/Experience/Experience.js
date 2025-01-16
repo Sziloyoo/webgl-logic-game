@@ -33,7 +33,7 @@ export default class Experience {
             socketIndexes: [0, 2, 4, 9],
             ringObjects: {
                 1: ['empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'laser', 'laser', 'empty', 'empty', 'empty', 'laser'],
-                2: ['empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'empty'],
+                2: ['empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'blocker', 'empty', 'laser', 'empty', 'empty'],
                 3: ['empty', 'laser', 'blocker', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
             }
         }

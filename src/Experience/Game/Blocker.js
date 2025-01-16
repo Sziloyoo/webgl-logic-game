@@ -12,7 +12,7 @@ export default class Blocker {
         this.gameObject.rotation.z = angle + Math.PI / 2
 
         // Create collider
-        this.collider = this.createCollider(0.1, false)
+        this.collider = this.createCollider(0.05, true)
         this.collider.name = `blocker-${index}`
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
@@ -27,9 +27,9 @@ export default class Blocker {
     createBlocker() {
         const blockerModel = this.resources.items.blockerModel.scene.clone()
 
-        blockerModel.scale.x = 3
-        blockerModel.scale.z = 3
-        blockerModel.scale.y = 3
+        blockerModel.scale.x = 2
+        blockerModel.scale.z = 2
+        blockerModel.scale.y = 2
 
         blockerModel.children[0].material = new AtlasMaterial().getMaterial()
         return blockerModel
