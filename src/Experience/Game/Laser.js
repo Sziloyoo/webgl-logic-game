@@ -4,9 +4,10 @@ import AtlasMaterial from './Materials/AtlasMaterial'
 import LaserMaterial from './Materials/LaserMaterial'
 
 export default class Laser {
-    constructor(position, angle, index, ringSize) {
+    constructor(position, angle, index, ringSize, parentId) {
         this.experience = new Experience()
         this.resources = this.experience.resources
+        this.debug = this.experience.debug
 
         // Create go
         this.gameObject = new THREE.Object3D()
@@ -37,11 +38,16 @@ export default class Laser {
         this.gameObject.add(this.laserModel)
 
         // Create collider
-        this.collider = this.createCollider(0.2, true)
+        this.collider = this.createCollider(0.75, false)
         this.collider.position.copy(position)
-        this.collider.name = `laser-${index}`
+        this.collider.name = `laser-${parentId}-${index}`
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
+
+        // Debug
+        if (this.debug.active) {
+            this.debug.addLabel(this.collider.name, this)
+        }
 
         this.update = (colliderArray) => {
             // Calculate new vectors the raycaster
@@ -80,10 +86,15 @@ export default class Laser {
         }
 
         this.getType = () => this.constructor.name
+        this.getWorldPos = () => {
+            const position = new THREE.Vector3()
+            this.collider.getWorldPosition(position)
+            return position
+        }
     }
 
     createRayPlane(maxRayLength) {
-        const rayPlaneGeometry = new THREE.PlaneGeometry(0.5, maxRayLength)
+        const rayPlaneGeometry = new THREE.PlaneGeometry(0.8, maxRayLength)
         rayPlaneGeometry.translate(0, maxRayLength / 2, 0)
 
         const laserMaterial = new LaserMaterial(maxRayLength)
@@ -95,7 +106,7 @@ export default class Laser {
     }
 
     createCollider(size, visible) {
-        const boxGeometry = new THREE.SphereGeometry(size, 8, 8)
+        const boxGeometry = new THREE.BoxGeometry(size, size, size)
         const colliderMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true, visible: visible ? true : false })
 
         return new THREE.Mesh(boxGeometry, colliderMaterial)
@@ -103,11 +114,6 @@ export default class Laser {
 
     createModel() {
         const laserModel = this.resources.items.laserModel.scene.clone()
-
-        laserModel.scale.x = 2
-        laserModel.scale.z = 2
-        laserModel.scale.y = 2
-
         laserModel.children[0].material = new AtlasMaterial().getMaterial()
         return laserModel
 

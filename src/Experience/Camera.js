@@ -8,7 +8,7 @@ export default class Camera {
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
-        this.distance = 20
+        this.distance = 24
         this.controls = null
 
         this.setInstance()

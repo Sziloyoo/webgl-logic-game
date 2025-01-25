@@ -8,7 +8,6 @@ export default class Controls extends EventEmitter{
         this.canPress = true
 
         window.addEventListener('keypress', (event) => {
-            console.log(this.canPress)
             if(!this.canPress) return
 
             switch(event.code){

@@ -1,5 +1,5 @@
 import Experience from '../Experience.js'
-import Environment from './Environment.js'
+import Lighting from './Lighting.js'
 import AtlasMaterial from './Materials/AtlasMaterial.js'
 import GlassMaterial from './Materials/GlassMaterial.js'
 import Ring from './Ring.js'
@@ -31,46 +31,46 @@ export default class World {
             })
         }
 
-        // Debug
+        // Debug panel
         if (this.debug.active) {
-            this.debugFolder = this.debug.ui.addFolder('world')
+            this.debugFolder = this.debug.ui.addFolder({
+                title: 'World',
+            })
         }
 
         // Wait for resources
         this.resources.on('ready', () => {
             // Setup
-            this.environment = new Environment()
+            this.lighting = new Lighting()
             this.setWorldAxes()
             this.initRings(numberOfRings, selectedRing, ringObjects)
-            this.initSockets(socketIndexes, numberOfRings, 0.34)
-            this.initLights()
+            this.initSockets(socketIndexes, numberOfRings, 0.45)
             this.initAssets()
         })
     }
 
     setWorldAxes() {
-        this.origin = new THREE.AxesHelper(1)
-        this.scene.add(this.origin)
+        const origin = new THREE.AxesHelper(1)
+        origin.visible = false
+        this.scene.add(origin)
 
-        //Debug
         if (this.debug.active) {
-            this.debugFolder
-                .add(this.origin, 'visible')
-                .name('worldOrigin')
+            this.debugFolder.addBinding(origin, 'visible', { label: 'Show Axes' })
         }
     }
 
     initRings(numberOfRings, selectedRing, ringObjects) {
         for (let i = 1; i <= numberOfRings; i++) {
+            const size = i * 1.2
             const objects = ringObjects[i]
-            const ring = selectedRing == i ? new Ring(i, true, objects, this.colliders) : new Ring(i, false, objects, this.colliders)
+            const ring = selectedRing == i ? new Ring(size, true, objects, this.colliders, i) : new Ring(size, false, objects, this.colliders, i)
             this.scene.add(ring.gameObject)
             this.ringContainer.set(i, ring)
         }
     }
 
     initSockets(socketIndexes, numberOfRings, z_offset) {
-        const radius = numberOfRings + 1.45
+        const radius = numberOfRings + 3.075
         for (const index of socketIndexes) {
             const angle = (index * Math.PI * 2) / 12
             const x = radius * Math.cos(angle)
@@ -79,33 +79,15 @@ export default class World {
             const socket = new Socket(index, z_offset)
             socket.gameObject.position.set(x, y, z_offset)
             socket.gameObject.rotation.z = angle + Math.PI / 2
+
             this.scene.add(socket.gameObject)
             this.socketContainer.set(index, socket)
             this.colliders.push(socket.collider)
         }
     }
 
-    initLights() {
-        // Ambient light
-        const ambientLight = new THREE.AmbientLight(0x8888ff, 0.1)
-        this.scene.add(ambientLight)
-
-        // Directional light
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-        directionalLight.position.set(1, 2, 5)
-        this.scene.add(directionalLight)
-
-        // Environment map
-        const envMap = this.resources.items.envMap
-        envMap.mapping = THREE.EquirectangularReflectionMapping
-        this.scene.environment = envMap
-    }
-
     initAssets() {
         const ringModel = this.resources.items.ringModel.scene
-        ringModel.scale.x = 3
-        ringModel.scale.z = 3
-        ringModel.scale.y = 3
 
         const atlasMaterial = new AtlasMaterial()
         const glassMaterial = new GlassMaterial()
@@ -117,7 +99,7 @@ export default class World {
 
     update() {
         this.ringContainer.forEach((ring, index) => {
-            if (ring) ring.update(this.colliders)
+            if (ring) ring.update(this.colliders, this.debugParams)
         })
 
         this.socketContainer.forEach((socket, index) => {

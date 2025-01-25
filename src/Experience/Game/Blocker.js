@@ -3,40 +3,43 @@ import Experience from '../Experience.js'
 import AtlasMaterial from './Materials/AtlasMaterial.js'
 
 export default class Blocker {
-    constructor(position, angle, index) {
+    constructor(position, angle, index, parentId) {
         this.experience = new Experience()
         this.resources = this.experience.resources
+        this.debug = this.experience.debug
 
         this.gameObject = this.createBlocker()
         this.gameObject.position.copy(position)
         this.gameObject.rotation.z = angle + Math.PI / 2
 
         // Create collider
-        this.collider = this.createCollider(0.05, true)
-        this.collider.name = `blocker-${index}`
+        this.collider = this.createCollider(0.75, false)
+        this.collider.name = `blocker-${parentId}-${index}`
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
 
-        this.update = () => {
-            //dthis.gameObject.lookAt(0, 0, 0)
+        this.update = () => 
+        this.getType = () => this.constructor.name
+        this.getWorldPos = () => {
+            const position = new THREE.Vector3()
+            this.gameObject.getWorldPosition(position)
+            return position
         }
 
-        this.getType = () => this.constructor.name
+        // Debug
+        if(this.debug.active){
+            this.debug.addLabel(this.collider.name, this)
+        }
     }
 
     createBlocker() {
         const blockerModel = this.resources.items.blockerModel.scene.clone()
-
-        blockerModel.scale.x = 2
-        blockerModel.scale.z = 2
-        blockerModel.scale.y = 2
-
         blockerModel.children[0].material = new AtlasMaterial().getMaterial()
         return blockerModel
     }
 
     createCollider(size, visible) {
-        const boxGeometry = new THREE.SphereGeometry(size, 8, 8)
+        const boxGeometry = new THREE.BoxGeometry(size, size, size)
         const colliderMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true, visible: visible ? true : false })
 
         return new THREE.Mesh(boxGeometry, colliderMaterial)

@@ -4,17 +4,18 @@ import Laser from './Laser'
 import Blocker from './Blocker'
 
 export default class Ring {
-    constructor(size, defaultSelected, objects, colliderArray) {
+    constructor(index, defaultSelected, objects, colliderArray, id) {
         // Materials
         this.activeMaterial = new THREE.MeshBasicMaterial({ color: 0xFFEA00 })
         this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00 })
 
         // States
         this.active = defaultSelected ? true : false
-        this.size = size
+        this.size = index + 1
 
         // GameObject
-        this.gameObject = this.createRing(size, defaultSelected)
+        this.gameObject = this.createRing(this.size, defaultSelected)
+        this.id = id
 
         // List of objects
         this.objectContainer = new Map()
@@ -80,9 +81,9 @@ export default class Ring {
     createSingleObject(objectName, index) {
         switch (objectName) {
             case "blocker":
-                return new Blocker(this.getPosition(index), this.getAngle(index), index)
+                return new Blocker(this.getPosition(index), this.getAngle(index), index, this.id)
             case "laser":
-                return new Laser(this.getPosition(index), this.getAngle(index), index, this.size)
+                return new Laser(this.getPosition(index), this.getAngle(index), index, this.size, this.id)
         }
     }
 

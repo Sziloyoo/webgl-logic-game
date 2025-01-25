@@ -1,19 +1,53 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
 html,
-body
-{
+body {
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
-.webgl
-{
+.webgl {
     position: fixed;
     top: 0;
     left: 0;
     outline: none;
+}
+
+#container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#labels {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#labels > div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    font-size: large;
+    user-select: none;
+    text-shadow:
+        -1px -1px 0 #000,
+        0 -1px 0 #000,
+        1px -1px 0 #000,
+        1px 0 0 #000,
+        1px 1px 0 #000,
+        0 1px 0 #000,
+        -1px 1px 0 #000,
+        -1px 0 0 #000;
 }
