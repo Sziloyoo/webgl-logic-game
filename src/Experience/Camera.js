@@ -20,6 +20,7 @@ export default class Camera {
                 title: 'Camera',
             })
             this.debugFolder.addBinding(this.controls, 'enabled', { label: 'Debug Camera' })
+            this.debugFolder.addButton({ title: "Reset Camera" }).on('click', () => { this.resetCamera() })
         }
     }
 
@@ -36,6 +37,10 @@ export default class Camera {
         this.controls.enabled = false
     }
 
+    resetCamera() {
+        this.instance.position.set(0, 0, this.distance)
+    }
+
     resize() {
         this.instance.aspect = this.sizes.width / this.sizes.height
         this.instance.updateProjectionMatrix()
@@ -43,8 +48,5 @@ export default class Camera {
 
     update() {
         if (this.controls) this.controls.update()
-
-        /* this.recalculate()
-        this.instance.position.lerp(this.targetPosition, 0.1) */
     }
 }

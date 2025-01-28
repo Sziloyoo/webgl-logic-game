@@ -24,7 +24,8 @@ export default class LaserMaterial {
                 u_length: { value: length },
                 u_texture: { value: this.noiseTexture },
                 u_speed: { value: -1.0 },
-                u_brightness: { value: 1.0 }
+                u_brightness: { value: 1.0 },
+                u_color: { value: new THREE.Vector3(0.6, 0.3, 0) }
             }
         })
     }

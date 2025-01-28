@@ -4,7 +4,7 @@ import AtlasMaterial from './Materials/AtlasMaterial'
 import LaserMaterial from './Materials/LaserMaterial'
 
 export default class Laser {
-    constructor(position, angle, index, ringSize, parentId) {
+    constructor(position, angle, index, parentId) {
         this.experience = new Experience()
         this.resources = this.experience.resources
         this.debug = this.experience.debug
@@ -14,7 +14,7 @@ export default class Laser {
 
         // Create laser
         this.raycaster = new THREE.Raycaster()
-        this.maxRayLength = 9
+        this.maxRayLength = this.getMaxRayDistanceById(parentId)
         this.rayLength = this.maxRayLength
         this.rayPlane = this.createRayPlane(this.maxRayLength)
         this.rayPlane.position.copy(position)
@@ -22,14 +22,6 @@ export default class Laser {
         this.gameObject.add(this.rayPlane)
 
         this.intersection = null
-
-        /* // Raycast helper
-        this.helper = new THREE.ArrowHelper(
-            this.getLaserDirection(position),
-            position,
-            2,
-            0x00FF00
-        ) */
 
         // Create modell
         this.laserModel = this.createModel()
@@ -79,6 +71,8 @@ export default class Laser {
                 this.intersection = null
             }
 
+            this.rayPlane.material.uniforms.u_color.value = this.getLaserColor(this.intersection?.userData.GO.getType())
+
             // Update laser plane
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
             this.rayPlane.material.uniforms.u_time.value = this.experience.time.elapsed / 1000
@@ -121,6 +115,23 @@ export default class Laser {
 
     getLaserDirection(position) {
         return new THREE.Vector3(-position.x, -position.y, 0).normalize()
+    }
+
+    getLaserColor(hit){
+        const color = new THREE.Vector3(0.6, 0.3, 0)
+        if(!hit) return color
+
+        hit == "Socket" ? color.set(0, 1, 0) : color.set(1, 0, 0)
+        return color
+    }
+
+    getMaxRayDistanceById(id){
+        switch(id){
+            case 1: return 8.025
+            case 2: return 9.225
+            case 3: return 10.425
+        }
+        return 10
     }
 }
 
