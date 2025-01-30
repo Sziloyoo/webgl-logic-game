@@ -71,7 +71,9 @@ export default class Laser {
                 this.intersection = null
             }
 
-            this.rayPlane.material.uniforms.u_color.value = this.getLaserColor(this.intersection?.userData.GO.getType())
+            const newColor = this.getLaserColor(this.intersection?.userData.GO.getType())
+            this.rayPlane.material.uniforms.u_color.value = newColor
+            this.laserModel.children[1].material.color.setRGB( newColor.x, newColor.y, newColor.z )
 
             // Update laser plane
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
@@ -109,6 +111,7 @@ export default class Laser {
     createModel() {
         const laserModel = this.resources.items.laserModel.scene.clone()
         laserModel.children[0].material = new AtlasMaterial().getMaterial()
+        laserModel.children[1].material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
         return laserModel
 
     }
