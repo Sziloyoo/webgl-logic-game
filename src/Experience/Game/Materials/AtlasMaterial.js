@@ -12,6 +12,7 @@ export default class AtlasMaterial{
 
         this.experience = new Experience()
         this.resources = this.experience.resources
+        this.debug = this.experience.debug
 
         this.colorMap = this.resources.items.atlasColor
         this.colorMap.colorSpace = THREE.SRGBColorSpace
@@ -31,11 +32,27 @@ export default class AtlasMaterial{
             normalMap: this.normalMap,
             aoMap: this.aormMap,
             roughnessMap: this.aormMap,
-            metalnessMap: this.aormMap
+            metalnessMap: this.aormMap,
+            metalness: 0.6,
+            roughness: 0.5,
+            normalScale: new THREE.Vector2(1.0, 1.0),
+            aoMapIntensity: 1.5
         })
+
+        if(this.debug.active) this.createDebugFolder()
     }
 
     getMaterial() {
         return this.material;
+    }
+
+    createDebugFolder(){
+        this.debugFolder = this.debug.ui.addFolder({
+            title: 'Atlas Material',
+        })
+        this.debugFolder.addBinding(this.material, 'metalness', { label: 'Metalness', min: 0, max: 1 })
+        this.debugFolder.addBinding(this.material, 'roughness', { label: 'Roughness', min: 0, max: 1 })
+        this.debugFolder.addBinding(this.material, 'normalScale', { label: 'Normal Strength', min: 1, max: 3 })
+        this.debugFolder.addBinding(this.material, 'aoMapIntensity', { label: 'AO Intensity', min: 0, max: 2 })
     }
 }

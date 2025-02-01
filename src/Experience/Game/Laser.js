@@ -16,7 +16,7 @@ export default class Laser {
         this.raycaster = new THREE.Raycaster()
         this.maxRayLength = this.getMaxRayDistanceById(parentId)
         this.rayLength = this.maxRayLength
-        this.rayPlane = this.createRayPlane(this.maxRayLength)
+        this.rayPlane = this.createRayPlane(this.maxRayLength, index)
         this.rayPlane.position.copy(position)
         this.rayPlane.rotation.z = angle + Math.PI / 2
         this.gameObject.add(this.rayPlane)
@@ -71,9 +71,9 @@ export default class Laser {
                 this.intersection = null
             }
 
-            const newColor = this.getLaserColor(this.intersection?.userData.GO.getType())
-            this.rayPlane.material.uniforms.u_color.value = newColor
-            this.laserModel.children[1].material.color.setRGB( newColor.x, newColor.y, newColor.z )
+            this.rayPlane.material.uniforms.u_color.value = this.getLaserColor(this.intersection?.userData.GO.getType())
+            const beamColor = this.getBeamColor(this.intersection?.userData.GO.getType())
+            this.laserModel.children[1].material.color.setRGB( beamColor.x, beamColor.y, beamColor.z )
 
             // Update laser plane
             this.rayPlane.scale.set(1, this.rayLength / this.maxRayLength, 1)
@@ -89,7 +89,7 @@ export default class Laser {
         }
     }
 
-    createRayPlane(maxRayLength) {
+    createRayPlane(maxRayLength, index) {
         const rayPlaneGeometry = new THREE.PlaneGeometry(0.8, maxRayLength)
         rayPlaneGeometry.translate(0, maxRayLength / 2, 0)
 
@@ -125,6 +125,14 @@ export default class Laser {
         if(!hit) return color
 
         hit == "Socket" ? color.set(0, 1, 0) : color.set(1, 0, 0)
+        return color
+    }
+
+    getBeamColor(hit){
+        const color = new THREE.Vector3(1, 0.4, 0)
+        if(!hit) return color
+
+        hit == "Socket" ? color.set(0, 1, 0) : color.set(2, 0, 0)
         return color
     }
 

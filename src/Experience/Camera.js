@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import CameraControls from 'camera-controls'
 
 export default class Camera {
     constructor() {
@@ -10,19 +10,37 @@ export default class Camera {
         this.canvas = this.experience.canvas
         this.debug = this.experience.debug
         this.defaultPosition = new THREE.Vector3(0, 0, 24)
-        this.farPosition = new THREE.Vector3(0, 0, 45) // This used when a portrait oriented screen needs more width space
+        this.farPosition = new THREE.Vector3(0, 0, 52) // This used when a portrait oriented screen needs more width space
         this.controls = null
 
         this.setInstance()
         this.setControls()
 
+        // Mouse movement camera rotation
+        this.mouseX = 0
+        this.mouseY = 0
+        this.azimuthAngle = 0
+        this.polarAngle = Math.PI / 2
+        this.moveAmount = 0.125
+
+        document.addEventListener('mousemove', (event) => {
+            this.mouseX = (event.clientX / window.innerWidth) * 2 - 1
+            this.mouseY = (event.clientY / window.innerHeight) * 2 - 1
+
+            this.azimuthAngle = 0 + this.mouseX * this.moveAmount
+            this.polarAngle = Math.PI / 2 + this.mouseY * this.moveAmount
+        })
+
+        // Debug settings
         if (this.debug.active) {
             this.debugFolder = this.debug.ui.addFolder({
                 title: 'Camera',
             })
             this.debugFolder.addBinding(this.controls, 'enabled', { label: 'Debug Camera' })
-            this.debugFolder.addButton({ title: "Reset Camera" }).on('click', () => { this.resetCamera() })
+            this.debugFolder.addBinding(this, 'moveAmount', { label: 'Move Amount', min: 0, max: 1.0 })
         }
+
+        this.updateCameraPosition()
     }
 
     setInstance() {
@@ -32,32 +50,33 @@ export default class Camera {
     }
 
     setControls() {
-        this.controls = new OrbitControls(this.instance, this.canvas)
+        CameraControls.install({ THREE: THREE })
+        this.controls = new CameraControls(this.instance, this.canvas)
         this.controls.enableDamping = true
         this.controls.maxPolarAngle = Math.PI
         this.controls.enabled = false
     }
 
-    resetCamera() {
-        this.updateCameraPosition()
-    }
-
     resize() {
         this.instance.aspect = this.sizes.width / this.sizes.height
         this.instance.updateProjectionMatrix()
-        if(!this.controls.enabled) this.updateCameraPosition()
+        if (!this.controls.enabled) this.updateCameraPosition()
     }
 
-    update() {
-        if (this.controls) this.controls.update()
-
+    update(delta) {
+        this.controls?.update(delta)
+        if (!this.controls.enabled) {
+            this.controls.rotateAzimuthTo(this.azimuthAngle, true)
+            this.controls.rotatePolarTo(this.polarAngle, true)
+        }
     }
 
-    updateCameraPosition(){
-    let aspectRatio = window.innerWidth / window.innerHeight
-    const t = THREE.MathUtils.clamp((aspectRatio - 9 / 16) / ((16 / 9) - (9 / 16)), 0, 1)
+    updateCameraPosition() {
+        let aspectRatio = window.innerWidth / window.innerHeight
+        const t = THREE.MathUtils.clamp((aspectRatio - 9 / 16) / ((16 / 9) - (9 / 16)), 0, 1)
 
-    // Lerp between closePosition and farPosition
-    this.instance.position.lerpVectors(this.farPosition, this.defaultPosition, t)
+        // Lerp between closePosition and farPosition
+        const newPosition = new THREE.Vector3().lerpVectors(this.farPosition, this.defaultPosition, t)
+        this.controls?.setPosition(newPosition.x, newPosition.y, newPosition.z, true)
     }
 }

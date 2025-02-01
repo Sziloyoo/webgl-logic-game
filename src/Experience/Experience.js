@@ -91,7 +91,7 @@ export default class Experience {
     }
 
     update() {
-        this.camera.update()
+        this.camera.update(this.time.delta)
         this.world.update()
         this.renderer.update()
         this.debug.update(this.camera.instance)

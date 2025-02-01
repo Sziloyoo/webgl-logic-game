@@ -14,7 +14,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/atlas_color.png'
+            'textures/atlas_color.jpg'
         ]
     },
     {
@@ -22,7 +22,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/atlas_normal.png'
+            'textures/atlas_normal.jpg'
         ]
     },
     {
@@ -30,7 +30,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/atlas_AORM.png'
+            'textures/atlas_AORM.jpg'
         ]
     },
     // Glass textures
@@ -39,7 +39,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/glass_opacity.png'
+            'textures/glass_opacity.jpg'
         ]
     },
     {
@@ -47,7 +47,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/glass_normal.png'
+            'textures/glass_normal.jpg'
         ]
     },
     {
@@ -55,7 +55,7 @@ export default [
         type: 'texture',
         path:
         [
-            'textures/glass_AORM.png'
+            'textures/glass_AORM.jpg'
         ]
     },
     // 3D models

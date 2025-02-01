@@ -13,6 +13,7 @@
     "vite-plugin-restart": "^0.4.1"
   },
   "dependencies": {
+    "camera-controls": "^2.9.0",
     "gsap": "^3.12.5",
     "three": "^0.170.0",
     "tweakpane": "^4.0.5"

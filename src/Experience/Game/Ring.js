@@ -56,7 +56,7 @@ export default class Ring {
     }
 
     createRing(size, defaultSelected) {
-        const geometry = new THREE.TorusGeometry(size * 1, 0.025, 4, 64)
+        const geometry = new THREE.TorusGeometry(size * 1, 0.06, 8, 64)
         const material = defaultSelected ? this.activeMaterial : this.inactiveMaterial
         return new THREE.Mesh(geometry, material)
     }

@@ -13,7 +13,7 @@ export default class Blocker {
         this.gameObject.rotation.z = angle + Math.PI / 2
 
         // Create collider
-        this.collider = this.createCollider(0.75, false)
+        this.collider = this.createCollider(0.65, false)
         this.collider.name = `blocker-${parentId}-${index}`
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
