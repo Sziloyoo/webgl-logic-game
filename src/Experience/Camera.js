@@ -9,7 +9,8 @@ export default class Camera {
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
         this.debug = this.experience.debug
-        this.distance = 24
+        this.defaultPosition = new THREE.Vector3(0, 0, 24)
+        this.farPosition = new THREE.Vector3(0, 0, 45) // This used when a portrait oriented screen needs more width space
         this.controls = null
 
         this.setInstance()
@@ -26,7 +27,7 @@ export default class Camera {
 
     setInstance() {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 100)
-        this.instance.position.set(0, 0, this.distance)
+        this.updateCameraPosition()
         this.scene.add(this.instance)
     }
 
@@ -38,15 +39,25 @@ export default class Camera {
     }
 
     resetCamera() {
-        this.instance.position.set(0, 0, this.distance)
+        this.updateCameraPosition()
     }
 
     resize() {
         this.instance.aspect = this.sizes.width / this.sizes.height
         this.instance.updateProjectionMatrix()
+        if(!this.controls.enabled) this.updateCameraPosition()
     }
 
     update() {
         if (this.controls) this.controls.update()
+
+    }
+
+    updateCameraPosition(){
+    let aspectRatio = window.innerWidth / window.innerHeight
+    const t = THREE.MathUtils.clamp((aspectRatio - 9 / 16) / ((16 / 9) - (9 / 16)), 0, 1)
+
+    // Lerp between closePosition and farPosition
+    this.instance.position.lerpVectors(this.farPosition, this.defaultPosition, t)
     }
 }
