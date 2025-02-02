@@ -23,13 +23,9 @@ export default class Camera {
         this.polarAngle = Math.PI / 2
         this.moveAmount = 0.125
 
-        document.addEventListener('mousemove', (event) => {
-            this.mouseX = (event.clientX / window.innerWidth) * 2 - 1
-            this.mouseY = (event.clientY / window.innerHeight) * 2 - 1
-
-            this.azimuthAngle = 0 + this.mouseX * this.moveAmount
-            this.polarAngle = Math.PI / 2 + this.mouseY * this.moveAmount
-        })
+        // Bind the handler to maintain the correct `this` reference
+        this.handleMouseMove = this.handleMouseMove.bind(this)
+        document.addEventListener('mousemove', this.handleMouseMove)
 
         // Debug settings
         if (this.debug.active) {
@@ -71,6 +67,14 @@ export default class Camera {
         }
     }
 
+    handleMouseMove(event) {
+        this.mouseX = (event.clientX / window.innerWidth) * 2 - 1
+        this.mouseY = (event.clientY / window.innerHeight) * 2 - 1
+
+        this.azimuthAngle = 0 + this.mouseX * this.moveAmount
+        this.polarAngle = Math.PI / 2 + this.mouseY * this.moveAmount
+    }
+
     updateCameraPosition() {
         let aspectRatio = window.innerWidth / window.innerHeight
         const t = THREE.MathUtils.clamp((aspectRatio - 9 / 16) / ((16 / 9) - (9 / 16)), 0, 1)
@@ -78,5 +82,10 @@ export default class Camera {
         // Lerp between closePosition and farPosition
         const newPosition = new THREE.Vector3().lerpVectors(this.farPosition, this.defaultPosition, t)
         this.controls?.setPosition(newPosition.x, newPosition.y, newPosition.z, true)
+    }
+
+    dispose(){
+        this.controls.dispose()
+        document.removeEventListener('mousemove', this.handleMouseMove)
     }
 }

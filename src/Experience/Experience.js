@@ -13,7 +13,7 @@ import sources from './sources.js'
 let instance = null
 
 export default class Experience {
-    constructor(_canvas) {
+    constructor(_canvas, game) {
         // Singleton
         if (instance) {
             return instance
@@ -27,16 +27,7 @@ export default class Experience {
         this.canvas = _canvas
 
         // Game states
-        this.gameState = {
-            numberOfRings: 3,
-            selectedRing: 3,
-            socketIndexes: [0, 2, 4, 9],
-            ringObjects: {
-                1: ['empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'laser', 'laser', 'empty', 'empty', 'empty', 'laser'],
-                2: ['empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'blocker', 'empty', 'laser', 'empty', 'empty'],
-                3: ['empty', 'laser', 'blocker', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
-            }
-        }
+        this.gameState = game
 
         // Setup
         this.debug = new Debug()
@@ -119,8 +110,9 @@ export default class Experience {
             }
         })
 
-        this.camera.controls.dispose()
-        this.renderer.instance.dispose()
+        this.camera.dispose()
+        this.controls.dispose()
+        this.renderer.dispose()
 
         if (this.debug.active)
             this.debug.ui.destroy()

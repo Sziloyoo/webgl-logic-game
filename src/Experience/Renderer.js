@@ -30,26 +30,8 @@ export default class Renderer {
         if (this.debug.active) this.createDebugFolder()
 
         // Full screen
-        window.addEventListener('dblclick', () => {
-            const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
-
-            if (!fullscreenElement) {
-                if (this.canvas.requestFullscreen) {
-                    this.canvas.requestFullscreen()
-                }
-                else if (this.canvas.webkitRequestFullscreen) {
-                    this.canvas.webkitRequestFullscreen()
-                }
-            }
-            else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen()
-                }
-                else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen()
-                }
-            }
-        })
+        this.handeDbClick = this.handeDbClick.bind(this)
+        window.addEventListener('dblclick', this.handeDbClick)
     }
 
     setInstance() {
@@ -82,5 +64,31 @@ export default class Renderer {
         this.debugFolder.addBinding(this.bloomPass, 'radius', { label: 'Radius', min: 0, max: 1 })
         this.debugFolder.addBinding(this.bloomPass, 'threshold', { label: 'Treshold', min: 0, max: 1 })
         this.debugFolder.addBinding(this.instance, 'toneMappingExposure', { label: 'Exposure', min: 0, max: 2 })
+    }
+
+    handeDbClick(){
+        const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+        if (!fullscreenElement) {
+            if (this.canvas.requestFullscreen) {
+                this.canvas.requestFullscreen()
+            }
+            else if (this.canvas.webkitRequestFullscreen) {
+                this.canvas.webkitRequestFullscreen()
+            }
+        }
+        else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen()
+            }
+            else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen()
+            }
+        }
+    }
+
+    dispose(){
+        this.instance.dispose()
+        window.removeEventListener('dblclick', this.handeDbClick)
     }
 }
