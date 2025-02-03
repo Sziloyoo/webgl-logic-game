@@ -4,10 +4,12 @@ import AtlasMaterial from './Materials/AtlasMaterial.js'
 import GlassMaterial from './Materials/GlassMaterial.js'
 import Ring from './Ring.js'
 import Socket from './Socket.js'
+import EventEmitter from '../Utils/EventEmitter.js'
 import * as THREE from 'three'
 
-export default class World {
+export default class World extends EventEmitter {
     constructor({ numberOfRings, selectedRing, socketIndexes, ringObjects }) {
+        super()
         // References
         this.experience = new Experience()
         this.scene = this.experience.scene
@@ -18,6 +20,7 @@ export default class World {
         // Game objects
         this.ringContainer = new Map()
         this.socketContainer = new Map()
+        this.numberOfActiveSockets = 0
 
         // Events
         this.rotateRing = (index, dirLeft) => {
@@ -102,8 +105,14 @@ export default class World {
             if (ring) ring.update(this.colliders, this.debugParams)
         })
 
+        this.numberOfActiveSockets = 0
         this.socketContainer.forEach((socket, index) => {
-            if (socket) socket.update()
+            if (socket) {
+                socket.update()
+                if (socket.active) this.numberOfActiveSockets++
+            }
         })
+        if (this.numberOfActiveSockets == this.socketContainer.size && this.socketContainer.size > 0) this.trigger('win')
+
     }
 }

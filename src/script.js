@@ -7,16 +7,41 @@ levels.forEach(levelButton => levelButton.addEventListener('click', handleLevelS
 
 // Init game
 let game
+let level
 const container = document.getElementById("container")
 const exitButton = document.getElementById("exit-button")
 exitButton.addEventListener('click', handleGameExit)
 
+// pop-up window
+const popup = document.getElementById('popup');
+const popupExitButton = document.getElementById('exitButton')
+const nextLevelButton = document.getElementById('nextLevelButton')
+
+function showPopup() {
+    popup.style.display = 'flex'
+}
+
+popupExitButton.addEventListener('click', function () {
+    handleGameExit()
+})
+
+function isNumber(value) {
+    return !isNaN(value) && value.trim() !== '';
+}
+
 function handleLevelSelect(e) {
     const selectedLevelNumber = e.target.textContent.trim()
+    handleGameStart(selectedLevelNumber - 1)
+
+}
+
+function handleGameStart(index) {
     menu.style.display = "none"
     container.style.display = "block"
+    document.body.style.overflow = 'hidden'
 
-    game = new Experience(document.querySelector('canvas.webgl'), levelList[selectedLevelNumber - 1])
+    game = new Experience(document.querySelector('canvas.webgl'), levelList[index], showPopup)
+    level = index
 
     // Show exit button
     exitButton.style.display = "block"
@@ -30,6 +55,7 @@ function handleGameExit() {
     // Hide exit button and game
     exitButton.style.display = "none"
     container.style.display = "none"
+    document.body.style.overflow = 'auto'
 
     // Reload into level select
     location.reload()
@@ -156,3 +182,8 @@ const levelList = [{
     }
 }
 ]
+
+// Check path
+const pathSegments = window.location.pathname.split('/')
+const currentPath = pathSegments[1]
+if (isNumber(currentPath)) handleGameStart(currentPath)

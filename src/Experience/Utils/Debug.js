@@ -37,5 +37,9 @@ export default class Debug {
                 label.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`
             }
         }
+
+        this.destroy = () => {
+            this.ui.dispose()
+        }
     }
 }

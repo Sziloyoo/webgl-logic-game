@@ -13,7 +13,7 @@ import sources from './sources.js'
 let instance = null
 
 export default class Experience {
-    constructor(_canvas, game) {
+    constructor(_canvas, game, popup) {
         // Singleton
         if (instance) {
             return instance
@@ -25,7 +25,6 @@ export default class Experience {
 
         // Options
         this.canvas = _canvas
-
         // Game states
         this.gameState = game
         this.gameState.numberOfRings = 3
@@ -47,6 +46,9 @@ export default class Experience {
         this.controls.on('down', this.downEvent)
         this.controls.on('left', this.leftEvent)
         this.controls.on('right', this.rightEvent)
+
+        // Game event
+        this.world.on('win', popup)
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -117,6 +119,6 @@ export default class Experience {
         this.renderer.dispose()
 
         if (this.debug.active)
-            this.debug.ui.destroy()
+            this.debug.destroy()
     }
 }
