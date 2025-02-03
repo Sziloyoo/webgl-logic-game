@@ -28,6 +28,8 @@ export default class Experience {
 
         // Game states
         this.gameState = game
+        this.gameState.numberOfRings = 3
+        this.gameState.selectedRing = 3
 
         // Setup
         this.debug = new Debug()

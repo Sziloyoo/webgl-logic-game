@@ -18,8 +18,8 @@ export default class Blocker {
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
 
-        this.update = () => 
         this.getType = () => this.constructor.name
+        this.update = () => 
         this.getWorldPos = () => {
             const position = new THREE.Vector3()
             this.gameObject.getWorldPosition(position)

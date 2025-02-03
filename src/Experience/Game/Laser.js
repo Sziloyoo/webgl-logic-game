@@ -57,16 +57,16 @@ export default class Laser {
                 this.rayLength = intersections[0].distance // Set ray length to the nearest hit
 
                 if (this.intersection != intersections[0].object) {
-                    if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+                    if (this.intersection && this.intersection.userData.GO?.getType() == "Socket") { this.intersection.userData.GO?.deactivate() }
 
                     this.intersection = intersections[0].object
-                    if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.activate() }
+                    if (this.intersection && this.intersection.userData.GO?.getType() == "Socket") { this.intersection.userData.GO?.activate() }
                 }
             }
             else {
                 this.rayLength = this.maxRayLength // Without intersection reset to max length
 
-                if (this.intersection && this.intersection.userData.GO.getType() == "Socket") { this.intersection.userData.GO.deactivate() }
+                if (this.intersection && this.intersection.userData.GO?.getType() == "Socket") { this.intersection.userData.GO?.deactivate() }
 
                 this.intersection = null
             }
