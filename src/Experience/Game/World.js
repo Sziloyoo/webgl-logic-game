@@ -13,6 +13,7 @@ export default class World extends EventEmitter {
         // References
         this.experience = new Experience()
         this.scene = this.experience.scene
+        this.controls = this.experience.controls
         this.resources = this.experience.resources
         this.colliders = []
         this.debug = this.experience.debug
@@ -112,7 +113,10 @@ export default class World extends EventEmitter {
                 if (socket.active) this.numberOfActiveSockets++
             }
         })
-        if (this.numberOfActiveSockets == this.socketContainer.size && this.socketContainer.size > 0) this.trigger('win')
+        if (this.numberOfActiveSockets == this.socketContainer.size && this.socketContainer.size > 0) {
+            this.experience.controls.canPress = false
+            this.trigger('win')
+        }
 
     }
 }

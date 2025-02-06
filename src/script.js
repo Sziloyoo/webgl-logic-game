@@ -10,15 +10,19 @@ let game
 let level
 const container = document.getElementById("container")
 const exitButton = document.getElementById("exit-button")
-exitButton.addEventListener('click', handleGameExit)
 
 // pop-up window
 const popup = document.getElementById('popup');
 const popupExitButton = document.getElementById('exitButton')
 const nextLevelButton = document.getElementById('nextLevelButton')
 
+exitButton.addEventListener('click', handleGameExit)
+nextLevelButton.addEventListener('click', handleNextGame)
+
 function showPopup() {
-    popup.style.display = 'flex'
+    setTimeout(() => {
+        popup.style.display = 'flex'
+    }, 1000)
 }
 
 popupExitButton.addEventListener('click', function () {
@@ -31,17 +35,18 @@ function isNumber(value) {
 
 function handleLevelSelect(e) {
     const selectedLevelNumber = e.target.textContent.trim()
-    handleGameStart(selectedLevelNumber - 1)
+    handleGameStart(selectedLevelNumber)
 
 }
 
-function handleGameStart(index) {
+function handleGameStart(selectedLevel) {
     menu.style.display = "none"
     container.style.display = "block"
     document.body.style.overflow = 'hidden'
+    level = Number(selectedLevel)
+    const index = selectedLevel - 1
 
     game = new Experience(document.querySelector('canvas.webgl'), levelList[index], showPopup)
-    level = index
 
     // Show exit button
     exitButton.style.display = "block"
@@ -58,7 +63,12 @@ function handleGameExit() {
     document.body.style.overflow = 'auto'
 
     // Reload into level select
-    location.reload()
+    window.location.href = window.location.origin
+}
+
+function handleNextGame() {
+    if(level == 15) return
+    window.location.href = `${window.location.origin}/${++level}`
 }
 
 const levelList = [{

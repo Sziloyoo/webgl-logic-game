@@ -128,10 +128,13 @@ body {
     z-index: 1000;
   }
   #popupContent {
-    background-color: white;
+    background-color: aquamarine;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    font-family: "Barlow Condensed", sans-serif;
+    color: black;
+    font-weight: 700;
     width: 300px;
   }
   #popupContent h2 {
