@@ -1,5 +1,5 @@
 # The logic game from Ratchet and Clank recreated for WebGL.
-![Local GIF](./screenshots/prototype.gif)
+![Local GIF](./screenshots/demo.gif)
 ## Setup
 ```node
 npm install
