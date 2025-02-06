@@ -24,6 +24,11 @@ export default class Controls extends EventEmitter {
         // Touch controls
         window.addEventListener("touchstart", this.handleTouchStart)
         window.addEventListener("touchend", this.handleTouchEnd)
+
+        // Safari prevent pull down
+        window.addEventListener("touchmove", (event) => {
+            event.preventDefault()
+        }, { passive: false })
     }
 
     handleKeyPress(event) {
@@ -66,7 +71,6 @@ export default class Controls extends EventEmitter {
     handleTouchEnd(event) {
         this.endX = event.changedTouches[0].clientX
         this.endY = event.changedTouches[0].clientY
-
         this.handleSwipe()
     }
 
