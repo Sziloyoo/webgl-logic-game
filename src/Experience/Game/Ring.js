@@ -6,8 +6,8 @@ import Blocker from './Blocker'
 export default class Ring {
     constructor(index, defaultSelected, objects, colliderArray, id) {
         // Materials
-        this.activeMaterial = new THREE.MeshBasicMaterial({ color: 0xFFEA00 })
-        this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00 })
+        this.activeMaterial = new THREE.MeshBasicMaterial({ color: 0xFFEA00, depthWrite: false })
+        this.inactiveMaterial = new THREE.MeshBasicMaterial({ color: 0x964B00, depthWrite: false })
 
         // States
         this.active = defaultSelected ? true : false

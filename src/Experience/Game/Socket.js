@@ -6,6 +6,7 @@ export default class Socket {
         // Singleton
         this.experience = new Experience()
         this.resources = this.experience.resources
+        this.type = "Socket"
 
         this.active = false
         this.activeMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00 })
@@ -28,7 +29,7 @@ export default class Socket {
         this.activate = () => this.active = true
         this.deactivate = () => this.active = false
 
-        this.getType = () => this.constructor.name
+        this.getType = () => this.type
     }
 
     createStocket() {

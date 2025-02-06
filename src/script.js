@@ -67,8 +67,9 @@ function handleGameExit() {
 }
 
 function handleNextGame() {
-    if(level == 15) return
-    window.location.href = `${window.location.origin}/${++level}`
+    if(level >= 15 || level <= 0) return
+    window.location.hash = ++level
+    window.location.reload()
 }
 
 const levelList = [{
@@ -194,6 +195,6 @@ const levelList = [{
 ]
 
 // Check path
-const pathSegments = window.location.pathname.split('/')
-const currentPath = pathSegments[1]
-if (isNumber(currentPath)) handleGameStart(currentPath)
+const pathSegments = window.location.hash
+const currentPath = Number(pathSegments.replace("#", ""))
+if(currentPath >= 1 && currentPath <=15) handleGameStart(currentPath)

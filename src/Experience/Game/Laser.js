@@ -8,6 +8,7 @@ export default class Laser {
         this.experience = new Experience()
         this.resources = this.experience.resources
         this.debug = this.experience.debug
+        this.type = "Laser"
 
         // Create go
         this.gameObject = new THREE.Object3D()
@@ -81,7 +82,7 @@ export default class Laser {
             this.rayPlane.material.uniforms.u_length.value = this.rayLength
         }
 
-        this.getType = () => this.constructor.name
+        this.getType = () => this.type
         this.getWorldPos = () => {
             const position = new THREE.Vector3()
             this.collider.getWorldPosition(position)

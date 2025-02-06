@@ -37,14 +37,13 @@ export default class Renderer {
     setInstance() {
         this.instance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: false
+            antialias: true
         })
         this.instance.toneMapping = THREE.ACESFilmicToneMapping
         this.instance.toneMappingExposure = 1.0
         this.instance.setClearColor('#000000')
         this.instance.setSize(this.sizes.width, this.sizes.height)
-        //this.instance.setPixelRatio(this.sizes.pixelRatio)
-        this.instance.setPixelRatio(1)
+        this.instance.setPixelRatio(this.sizes.pixelRatio)
     }
 
     resize() {

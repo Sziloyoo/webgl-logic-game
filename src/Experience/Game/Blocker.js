@@ -7,6 +7,7 @@ export default class Blocker {
         this.experience = new Experience()
         this.resources = this.experience.resources
         this.debug = this.experience.debug
+        this.type = "Blocker"
 
         this.gameObject = this.createBlocker()
         this.gameObject.position.copy(position)
@@ -18,7 +19,7 @@ export default class Blocker {
         this.collider.userData.GO = this
         this.gameObject.add(this.collider)
 
-        this.getType = () => this.constructor.name
+        this.getType = () => this.type
         this.update = () => 
         this.getWorldPos = () => {
             const position = new THREE.Vector3()
