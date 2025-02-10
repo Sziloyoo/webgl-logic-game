@@ -40,7 +40,7 @@ export default class Blocker {
     }
 
     createCollider(size, visible) {
-        const boxGeometry = new THREE.BoxGeometry(size, size, size)
+        const boxGeometry = new THREE.BoxGeometry(size * 1.5, size, size)
         const colliderMaterial = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true, visible: visible ? true : false })
 
         return new THREE.Mesh(boxGeometry, colliderMaterial)
