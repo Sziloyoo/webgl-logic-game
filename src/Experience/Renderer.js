@@ -30,8 +30,8 @@ export default class Renderer {
         if (this.debug.active) this.createDebugFolder()
 
         // Full screen
-        this.handeDbClick = this.handeDbClick.bind(this)
-        window.addEventListener('dblclick', this.handeDbClick)
+        /* this.handeDbClick = this.handeDbClick.bind(this)
+        window.addEventListener('dblclick', this.handeDbClick) */
     }
 
     setInstance() {
@@ -66,7 +66,7 @@ export default class Renderer {
         this.debugFolder.addBinding(this.instance, 'toneMappingExposure', { label: 'Exposure', min: 0, max: 2 })
     }
 
-    handeDbClick(){
+/*     handeDbClick(){
         const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
 
         if (!fullscreenElement) {
@@ -85,10 +85,10 @@ export default class Renderer {
                 document.webkitExitFullscreen()
             }
         }
-    }
+    } */
 
     dispose(){
         this.instance.dispose()
-        window.removeEventListener('dblclick', this.handeDbClick)
+        /* window.removeEventListener('dblclick', this.handeDbClick) */
     }
 }

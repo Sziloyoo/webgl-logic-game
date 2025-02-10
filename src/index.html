@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logic Game</title>
-    <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -20,6 +20,18 @@
         </div>
     </div>
     <div id="menu">
+        <div id="title">WebGL Logic Game</div>
+        <p>The door unlocking minigame from Ratchet and Clank (2002) remade for the web by:</p>
+        <a href="https://www.linkedin.com/in/szilard-pullai/">Pullai Szilárd</a>
+        <div id="controls">
+            <h1>Controls</h1>
+            <br>
+            <img src="./menu/controls_select_ring.jpg" alt="select ring">
+            <p>To select a ring swipe UP / DOWN on mobile, OR use the arrow keyboard keys</p>
+            <br>
+            <img src="./menu/controls_rotate_ring.jpg" alt="rotate ring">
+            <p>To rotate the selected ring swipe LEFT / RIGHT on mobile, OR use the arrow keyboard keys</p>
+        </div>
         <div id="menu-head">
             <h1>Select a level!</h1>
         </div>
@@ -40,6 +52,7 @@
             <div class="level-button">14</div>
             <div class="level-button">15</div>
         </div>
+        <br>
     </div>
     <div id="container">
         <canvas class="webgl"></canvas>

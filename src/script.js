@@ -29,17 +29,13 @@ popupExitButton.addEventListener('click', function () {
     handleGameExit()
 })
 
-function isNumber(value) {
-    return !isNaN(value) && value.trim() !== '';
-}
-
 function handleLevelSelect(e) {
     const selectedLevelNumber = e.target.textContent.trim()
     handleGameStart(selectedLevelNumber)
 
 }
 
-function handleGameStart(selectedLevel) {
+function handleGameStart(selectedLevel = 1) {
     menu.style.display = "none"
     container.style.display = "block"
     document.body.style.overflow = 'hidden'
@@ -67,7 +63,7 @@ function handleGameExit() {
 }
 
 function handleNextGame() {
-    if(level >= 15 || level <= 0) return
+    if(level >= 15 || level <= 0) handleGameExit()
     window.location.hash = ++level
     window.location.reload()
 }
@@ -185,11 +181,11 @@ const levelList = [{
     }
 },
 {
-    socketIndexes: [0, 2, 4, 6, 8, 10],
+    socketIndexes: [0, 2, 4, 9, 11],
     ringObjects: {
-        1: ['laser', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'laser', 'empty'],
-        2: ['empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'empty'],
-        3: ['empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'empty'],
+        1: ['empty', 'empty', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'empty', 'empty'],
+        2: ['empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty', 'laser', 'empty', 'blocker', 'empty'],
+        3: ['laser', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty'],
     }
 }
 ]
