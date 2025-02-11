@@ -157,7 +157,7 @@ const levelList = [{
     }
 },
 {
-    socketIndexes: [3, 5, 6, 7],
+    socketIndexes: [3, 5, 6, 8],
     ringObjects: {
         1: ['empty', 'empty', 'laser', 'empty', 'empty', 'empty', 'blocker', 'empty', 'empty', 'empty', 'empty', 'empty'],
         2: ['empty', 'empty', 'laser', 'empty', 'empty', 'laser', 'empty', 'empty', 'empty', 'empty', 'empty', 'empty'],
