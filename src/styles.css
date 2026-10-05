@@ -1,0 +1,21 @@
+html,
+body {
+  overscroll-behavior: contain;
+}
+
+.debug-label {
+  color: white;
+  font-size: large;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  text-shadow:
+    -1px -1px 0 #000,
+    0 -1px 0 #000,
+    1px -1px 0 #000,
+    1px 0 0 #000,
+    1px 1px 0 #000,
+    0 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px 0 0 #000;
+}

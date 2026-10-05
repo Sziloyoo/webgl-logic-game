@@ -1,0 +1,28 @@
+.root {
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  touch-action: none;
+}
+
+.exitButton {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  color: whitesmoke;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (hover: hover) {
+  .exitButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.loadingOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: #000;
+}
