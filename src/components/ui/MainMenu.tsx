@@ -25,7 +25,7 @@ export function MainMenu() {
             The door unlocking minigame from Ratchet and Clank (2002) remade for the web by:
           </Text>
           <Anchor href="https://www.linkedin.com/in/szilard-pullai/" className={classes.text} underline="never">
-            Pullai Szilárd
+            Szilárd Pullai
           </Anchor>
         </Stack>
 
