@@ -30,6 +30,8 @@ interface GameState {
 
   startLevel: (levelNumber: number) => void
   nextLevel: () => void
+  /** Starts the current level over, with a reset timer. */
+  restartLevel: () => void
   /** Marks the current level as skipped and moves on to the next one. */
   skipLevel: () => void
   exitToMenu: () => void
@@ -87,6 +89,11 @@ export const useGameStore = create<GameState>()((set, get) => ({
     const { levelNumber, startLevel, exitToMenu } = get()
     if (levelNumber === null || levelNumber >= LEVEL_COUNT) exitToMenu()
     else startLevel(levelNumber + 1)
+  },
+
+  restartLevel: () => {
+    const { levelNumber, startLevel } = get()
+    if (levelNumber !== null) startLevel(levelNumber)
   },
 
   skipLevel: () => {

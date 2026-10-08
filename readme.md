@@ -6,17 +6,17 @@ npm install
 npm run dev
 ```
 ## ToDo
-- New levels are only available after the player completed the one before it.
-- A timer should be displayed at the top center of the screen during gameplay.
-- When completing a level, the time needs to be displayed after finish.
-- In the first level a tutorial textbox should appear at the bottom of the screen with information about the controls and how to complete a level. After the player moves a laser, with a two second delay the controls help textbox should disappear. After that a new one comes up which explains that the lasers must be pointed into a free socket. When all lights turn green on the ring, the level is completed.
-- At the top right corner a pause menu should appear instead of the exit button. During paused the game rendering / logic must stop. In the pause menu: watch ad button to skip level, rest level button and exit menu button.
-- Add sound effects to the game.
-- Add music to the game, and a mute button at the top left corner during gameplay
-- Add some kind of radial background shader behind the ring which moves slightly
-- Skip level in the pause menu by watching an ad.
-- Remove debug menu and url hash level IDs.
-- Remove vercel from the project.
+- [x] New levels are only available after the player completed the one before it.
+- [x] A timer should be displayed at the top center of the screen during gameplay.
+- [x] When completing a level, the time needs to be displayed after finish.
+- [x] In the first level a tutorial textbox should appear at the bottom of the screen with information about the controls and how to complete a level. After the player moves a laser, with a two second delay the controls help textbox should disappear. After that a new one comes up which explains that the lasers must be pointed into a free socket. When all lights turn green on the ring, the level is completed.
+- [x] At the top right corner a pause menu should appear instead of the exit button. During paused the game rendering / logic must stop. In the pause menu: watch ad button to skip level, rest level button and exit menu button.
+- [ ] Add sound effects to the game. (audio system ready, needs the files: [audio guide](./docs/audio.md))
+- [ ] Add music to the game, and a mute button at the top left corner during gameplay (mute button done, music needs the file)
+- [ ] Add some kind of radial background shader behind the ring which moves slightly
+- [x] Skip level in the pause menu by watching an ad.
+- [x] Remove debug menu and url hash level IDs.
+- [ ] Remove vercel from the project.
 
 ## Scripts
 | Command | Description |
@@ -42,7 +42,7 @@ npm run dev
   local storage (`logic-game-progress`), clear it to start over.
 - A timer runs during gameplay and the completion time is shown when a level is solved.
 - The first level shows a short tutorial.
-- Pause menu (top right, or `Escape`): resume, skip the level by watching an ad, exit to the menu. The scene stops
+- Pause menu (top right, or `Escape`): resume, restart the level, skip it by watching an ad, exit to the menu. The scene stops
   updating and rendering while paused, and the game pauses itself when the tab is hidden.
 - Mute button (top left), saved in local storage (`logic-game-settings`).
 

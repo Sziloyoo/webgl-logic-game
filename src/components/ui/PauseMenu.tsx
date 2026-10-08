@@ -1,11 +1,12 @@
 import { Badge, Button, Modal, Stack, Title } from '@mantine/core'
-import { IconDoorExit, IconPlayerPlayFilled, IconPlayerSkipForwardFilled } from '@tabler/icons-react'
+import { IconDoorExit, IconPlayerPlayFilled, IconPlayerSkipForwardFilled, IconRotateClockwise } from '@tabler/icons-react'
 import { showRewardedAd, useAdStore } from '../../services/ads'
 import { useGameStore } from '../../stores/useGameStore'
 
 export function PauseMenu() {
   const paused = useGameStore((state) => state.paused)
   const resume = useGameStore((state) => state.resume)
+  const restartLevel = useGameStore((state) => state.restartLevel)
   const skipLevel = useGameStore((state) => state.skipLevel)
   const exitToMenu = useGameStore((state) => state.exitToMenu)
   const adPlaying = useAdStore((state) => state.playing)
@@ -32,6 +33,9 @@ export function PauseMenu() {
         </Title>
         <Button size="md" leftSection={<IconPlayerPlayFilled size={18} />} onClick={resume} disabled={adPlaying} data-autofocus>
           Resume
+        </Button>
+        <Button size="md" variant="light" leftSection={<IconRotateClockwise size={18} />} onClick={restartLevel} disabled={adPlaying}>
+          Restart level
         </Button>
         <Button
           size="md"
