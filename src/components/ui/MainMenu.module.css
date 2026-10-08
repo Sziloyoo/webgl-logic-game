@@ -17,6 +17,7 @@
 }
 
 .levelButton {
+  position: relative;
   width: 128px;
   height: 128px;
   display: flex;
@@ -36,14 +37,40 @@
 }
 
 @media (hover: hover) {
-  .levelButton:hover {
+  .levelButton:not(:disabled):hover {
     background-color: var(--mantine-color-aqua-2);
     transform: translateY(-4px);
   }
 }
 
-.levelButton:active {
+.levelButton:not(:disabled):active {
   transform: scale(0.96);
+}
+
+.levelButton:disabled {
+  border-color: var(--mantine-color-dark-4);
+  background-color: var(--mantine-color-dark-3);
+  color: var(--mantine-color-dark-5);
+  cursor: not-allowed;
+}
+
+.levelBadge {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid var(--mantine-color-body);
+  background-color: var(--mantine-color-aqua-8);
+  color: white;
+}
+
+.levelBadgeLocked {
+  background-color: var(--mantine-color-dark-5);
 }
 
 .controlImage {

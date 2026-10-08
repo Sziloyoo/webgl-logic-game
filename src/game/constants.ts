@@ -24,6 +24,8 @@ export const slotPosition = (slot: number, radius: number, z = 0): [number, numb
   return [radius * Math.cos(angle), radius * Math.sin(angle), z]
 }
 
+export type RotationDirection = 'left' | 'right'
+
 /** Ring rotation animation, also used to rate limit the input. */
 export const ROTATION_DURATION = 0.2
 
@@ -33,3 +35,6 @@ export const ROTATE_COOLDOWN = 200
 
 /** Delay before the level complete popup shows up, in milliseconds. */
 export const WIN_POPUP_DELAY = 1000
+
+/** The first tutorial box closes this long after the player first rotates a ring, in milliseconds. */
+export const TUTORIAL_CONTROLS_HIDE_DELAY = 2000

@@ -10,7 +10,6 @@ import { useMaterials } from '../../materials/MaterialsContext'
 import { getColliderData, useColliderStore, type ColliderData } from '../../stores/useColliderStore'
 import { useGameStore } from '../../stores/useGameStore'
 import { Collider } from './Collider'
-import { DebugLabel } from './DebugLabel'
 
 type LaserModel = { nodes: { laser_base: Mesh; laser_tip: Mesh } }
 type BeamState = keyof typeof BEAM_COLORS
@@ -99,9 +98,7 @@ export function Laser({ ring, slot }: LaserProps) {
         <mesh geometry={nodes.laser_base.geometry} material={atlas} />
         <mesh geometry={nodes.laser_tip.geometry} material={tipMaterial} />
       </group>
-      <Collider name={id} data={COLLIDER_DATA} size={COLLIDER_SIZE} position={position}>
-        <DebugLabel text={id} />
-      </Collider>
+      <Collider name={id} data={COLLIDER_DATA} size={COLLIDER_SIZE} position={position} />
     </>
   )
 }

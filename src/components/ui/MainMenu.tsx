@@ -1,8 +1,34 @@
 import { Anchor, Container, Group, Image, SimpleGrid, Stack, Text, Title, UnstyledButton } from '@mantine/core'
+import { IconCheck, IconLock, IconPlayerSkipForwardFilled } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import { LEVELS } from '../../game/levels'
 import { useGameStore } from '../../stores/useGameStore'
+import { isLevelUnlocked, useProgressStore } from '../../stores/useProgressStore'
 import classes from './MainMenu.module.css'
+
+function LevelButton({ level }: { level: number }) {
+  const startLevel = useGameStore((state) => state.startLevel)
+  const unlocked = useProgressStore((state) => isLevelUnlocked(state, level))
+  const completed = useProgressStore((state) => state.completedLevels.includes(level))
+  const skipped = useProgressStore((state) => state.skippedLevels.includes(level))
+
+  const status = !unlocked ? 'locked' : completed ? 'completed' : skipped ? 'skipped' : 'open'
+  const badge = { locked: <IconLock size={18} />, completed: <IconCheck size={20} />, skipped: <IconPlayerSkipForwardFilled size={16} /> }
+
+  return (
+    <UnstyledButton
+      className={classes.levelButton}
+      onClick={() => startLevel(level)}
+      disabled={!unlocked}
+      aria-label={`Level ${level}${status === 'open' ? '' : `, ${status}`}`}
+    >
+      {level}
+      {status !== 'open' && (
+        <span className={`${classes.levelBadge} ${status === 'locked' ? classes.levelBadgeLocked : ''}`}>{badge[status]}</span>
+      )}
+    </UnstyledButton>
+  )
+}
 
 function ControlHelp({ image, alt, children }: { image: string; alt: string; children: ReactNode }) {
   return (
@@ -14,8 +40,6 @@ function ControlHelp({ image, alt, children }: { image: string; alt: string; chi
 }
 
 export function MainMenu() {
-  const startLevel = useGameStore((state) => state.startLevel)
-
   return (
     <Container size="lg" py="xl">
       <Stack align="center" gap="lg">
@@ -34,9 +58,7 @@ export function MainMenu() {
         </Title>
         <Group justify="center" gap="xl">
           {LEVELS.map((_, index) => (
-            <UnstyledButton key={index} className={classes.levelButton} onClick={() => startLevel(index + 1)}>
-              {index + 1}
-            </UnstyledButton>
+            <LevelButton key={index} level={index + 1} />
           ))}
         </Group>
 

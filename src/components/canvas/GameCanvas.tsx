@@ -1,10 +1,10 @@
 import { Canvas, extend, useFrame, type GLProps } from '@react-three/fiber'
 import { Suspense } from 'react'
 import * as THREE from 'three/webgpu'
+import { beamTime } from '../../materials/laserMaterial'
 import { useGameStore } from '../../stores/useGameStore'
 import { Board } from './Board'
 import { CameraRig } from './CameraRig'
-import { DebugHelpers } from './DebugHelpers'
 import { Level } from './Level'
 import { Lighting } from './Lighting'
 import { MaterialsProvider } from './MaterialsProvider'
@@ -27,29 +27,35 @@ async function createRenderer({ canvas }: DefaultGLProps) {
   return renderer
 }
 
-/** Keeps every world matrix up to date before the lasers cast their rays. */
-function MatrixUpdater() {
-  useFrame(({ scene }) => scene.updateMatrixWorld(), -2)
+/** Per frame bookkeeping that runs before the lasers cast their rays. */
+function FrameUpdater() {
+  useFrame(({ scene }, delta) => {
+    scene.updateMatrixWorld()
+    // Clamped, so the first frame after a pause doesn't jump ahead
+    beamTime.value += Math.min(delta, 0.1)
+  }, -2)
   return null
 }
 
 export function GameCanvas() {
   const level = useGameStore((state) => state.level)
   const runId = useGameStore((state) => state.runId)
+  const paused = useGameStore((state) => state.paused)
 
   return (
     <Canvas
       gl={createRenderer}
+      // Nothing is updated or rendered while the game is paused
+      frameloop={paused ? 'never' : 'always'}
       dpr={[1, 2]}
       camera={{ fov: 35, near: 0.1, far: 100, position: [0, 0, 24] }}
       // No shadows, R3F's default PCFSoftShadowMap type does not exist in WebGPURenderer
       shadows={{ enabled: false, type: THREE.PCFShadowMap }}
     >
       <color attach="background" args={['#000000']} />
-      <MatrixUpdater />
+      <FrameUpdater />
       <CameraRig />
       <PostProcessing />
-      <DebugHelpers />
 
       <Suspense fallback={null}>
         <Lighting />

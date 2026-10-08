@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { ROTATE_COOLDOWN, SELECT_COOLDOWN } from '../game/constants'
+import { useAdStore } from '../services/ads'
 import { useGameStore } from '../stores/useGameStore'
 
 type InputAction = 'up' | 'down' | 'left' | 'right'
@@ -18,7 +19,7 @@ const KEY_BINDINGS: Record<string, InputAction> = {
 /** Minimum swipe distance in pixels, to avoid accidental touches. */
 const MIN_SWIPE_DISTANCE = 20
 
-/** Keyboard (arrows / WASD) and touch swipe controls of the rings. */
+/** Keyboard (arrows / WASD, Escape to pause) and touch swipe controls of the rings. */
 export function useGameInput() {
   useEffect(() => {
     // Prevents button spamming while a ring is rotating
@@ -28,7 +29,7 @@ export function useGameInput() {
     const trigger = (action: InputAction) => {
       const now = performance.now()
       const game = useGameStore.getState()
-      if (now < lockedUntil || game.status !== 'playing') return
+      if (now < lockedUntil || game.status !== 'playing' || game.paused || !game.sceneReady) return
 
       switch (action) {
         case 'up':
@@ -51,7 +52,13 @@ export function useGameInput() {
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement) return // e.g. typing into the debug panel
+      // Escape toggles the pause menu (not while an ad is playing)
+      if (event.code === 'Escape') {
+        const game = useGameStore.getState()
+        if (!game.paused) game.pause()
+        else if (!useAdStore.getState().playing) game.resume()
+        return
+      }
       const action = KEY_BINDINGS[event.code]
       if (action) trigger(action)
     }
