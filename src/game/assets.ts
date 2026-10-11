@@ -1,4 +1,4 @@
-import { useGLTF, useTexture } from '@react-three/drei'
+import { useEnvironment, useGLTF, useTexture } from '@react-three/drei'
 
 export const DRACO_PATH = 'draco/'
 
@@ -25,4 +25,5 @@ export const ENVIRONMENT_MAP = 'textures/rogland_clear_night_1k.hdr'
 export function preloadAssets() {
   Object.values(MODELS).forEach((model) => useGLTF.preload(model, DRACO_PATH))
   useTexture.preload(Object.values(TEXTURES))
+  useEnvironment.preload({ files: ENVIRONMENT_MAP })
 }
