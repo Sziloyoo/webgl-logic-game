@@ -41,7 +41,7 @@ export function PauseMenu() {
           size="md"
           variant="light"
           leftSection={<IconPlayerSkipForwardFilled size={18} />}
-          rightSection={<Badge size="sm">Watch ad</Badge>}
+          rightSection={<Badge color="black" size="sm">Watch ad</Badge>}
           onClick={handleSkip}
           loading={adPlaying}
         >
