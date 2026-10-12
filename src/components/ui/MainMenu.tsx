@@ -43,14 +43,11 @@ export function MainMenu() {
   return (
     <Container size="lg" py="xl">
       <Stack align="center" gap="lg">
-        <Title className={classes.title}>WebGL Logic Game</Title>
+        <Title className={classes.title}>Light Ray</Title>
         <Stack align="center" gap={4}>
           <Text className={classes.text}>
-            The door unlocking minigame from Ratchet and Clank (2002) remade for the web by:
+            A mini logic game with stylized graphics and easy controls.
           </Text>
-          <Anchor href="https://www.linkedin.com/in/szilard-pullai/" className={classes.text} underline="never">
-            Szilárd Pullai
-          </Anchor>
         </Stack>
 
         <Title order={2} className={classes.heading}>

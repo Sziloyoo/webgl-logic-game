@@ -1,4 +1,4 @@
-import { Group, Kbd, Paper, Stack, Text, Transition } from '@mantine/core'
+import { Group, Kbd, Paper, Stack, Text, Transition, CloseButton } from '@mantine/core'
 import { useEffect, useState, type ReactNode } from 'react'
 import { TUTORIAL_CONTROLS_HIDE_DELAY } from '../../game/constants'
 import { gameEvents } from '../../game/events'
@@ -9,14 +9,27 @@ type Step = 'controls' | 'goal'
 
 const FADE_DURATION = 300
 
-function TutorialBox({ mounted, delay = 0, title, children }: { mounted: boolean; delay?: number; title: string; children: ReactNode }) {
+function TutorialBox({
+  mounted,
+  delay = 0,
+  title,
+  onClose,
+  children,
+}: {
+  mounted: boolean
+  delay?: number
+  title: string
+  onClose: () => void
+  children: ReactNode
+}) {
   return (
     <Transition mounted={mounted} transition="fade-up" duration={FADE_DURATION} enterDelay={delay}>
       {(styles) => (
         <div className={classes.tutorial} style={styles} role="status">
           <Paper className={classes.tutorialCard} px="md" py="sm" radius="lg" shadow="lg">
+            <CloseButton className={classes.tutorialClose} c="aqua.3" onClick={onClose} aria-label="Close tutorial" />
             <Stack gap={6}>
-              <Text className={classes.tutorialTitle} fz="lg" fw={700} lh={1.2}>
+              <Text className={classes.tutorialTitle} fz="lg" fw={700} lh={1.2} pr={32}>
                 {title}
               </Text>
               {children}
@@ -46,6 +59,8 @@ function ControlRow({ keys, children }: { keys: string[]; children: ReactNode })
 /** Explains the controls and then the goal of the game, shown in the first level. */
 export function Tutorial() {
   const sceneReady = useGameStore((state) => state.sceneReady)
+  const [closed, setClosed] = useState<Record<Step, boolean>>({ controls: false, goal: false })
+  const close = (box: Step) => () => setClosed((prev) => ({ ...prev, [box]: true }))
   const won = useGameStore((state) => state.status === 'won')
   const [step, setStep] = useState<Step>('controls')
 
@@ -64,7 +79,9 @@ export function Tutorial() {
 
   return (
     <>
-      <TutorialBox mounted={sceneReady && step === 'controls'} title="How to play">
+      <TutorialBox mounted={sceneReady && step === 'controls' && !closed.controls}
+          onClose={close('controls')}
+          title="How to play">
         <ControlRow keys={['↑', '↓']}>or swipe up / down to select a ring</ControlRow>
         <ControlRow keys={['←', '→']}>or swipe left / right to rotate it</ControlRow>
         <Text fz="sm" c="dimmed">
@@ -72,7 +89,10 @@ export function Tutorial() {
         </Text>
       </TutorialBox>
 
-      <TutorialBox mounted={sceneReady && step === 'goal' && !won} delay={FADE_DURATION} title="Light up every socket">
+      <TutorialBox mounted={sceneReady && step === 'goal' && !won && !closed.goal}
+          onClose={close('goal')}
+          delay={FADE_DURATION}
+          title="Light up every socket">
         <Text fz="md" fw={600}>
           Point the lasers into the free sockets around the board. When all the lights on the ring turn green, the level
           is complete.

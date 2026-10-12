@@ -3,16 +3,16 @@ import { IconPlayerPauseFilled, IconVolume, IconVolumeOff } from '@tabler/icons-
 import { useEffect, useRef } from 'react'
 import { formatTime } from '../../game/time'
 import { getElapsedTime, useGameStore } from '../../stores/useGameStore'
-import { useSettingsStore } from '../../stores/useSettingsStore'
+/* import { useSettingsStore } from '../../stores/useSettingsStore' */
 import classes from './GameView.module.css'
 
-function MuteButton() {
+/* function MuteButton() {
   const muted = useSettingsStore((state) => state.muted)
   const toggleMuted = useSettingsStore((state) => state.toggleMuted)
 
   return (
     <ActionIcon
-      className={`${classes.hudButton} ${classes.hudLeft}`}
+      className={`${classes.hudButton} ${classes.hudMiddle}`}
       variant="subtle"
       size="xl"
       onClick={toggleMuted}
@@ -22,7 +22,7 @@ function MuteButton() {
       {muted ? <IconVolumeOff /> : <IconVolume />}
     </ActionIcon>
   )
-}
+} */
 
 function GameTimer() {
   const textRef = useRef<HTMLSpanElement>(null)
@@ -39,7 +39,7 @@ function GameTimer() {
   }, [])
 
   return (
-    <div className={classes.timer} role="timer" aria-label="Level time">
+    <div className={`${classes.timer} ${classes.hudLeft}`} role="timer" aria-label="Level time">
       <span ref={textRef}>{formatTime(0)}</span>
     </div>
   )
@@ -66,7 +66,7 @@ function PauseButton() {
 export function Hud() {
   return (
     <div className={classes.hud}>
-      <MuteButton />
+      {/* <MuteButton /> */}
       <GameTimer />
       <PauseButton />
     </div>

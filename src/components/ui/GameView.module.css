@@ -20,7 +20,7 @@
   right: max(16px, env(safe-area-inset-right));
   z-index: 100;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   pointer-events: none;
 }
@@ -79,8 +79,16 @@
 }
 
 .tutorialCard {
+  position: relative;
   background-color: rgba(47, 79, 79, 0.88);
   border: 2px solid var(--mantine-color-aqua-8);
+}
+
+.tutorialClose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  pointer-events: auto;
 }
 
 .tutorialTitle {
