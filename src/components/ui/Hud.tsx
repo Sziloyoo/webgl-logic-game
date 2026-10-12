@@ -1,5 +1,5 @@
 import { ActionIcon } from '@mantine/core'
-import { IconPlayerPauseFilled, IconVolume, IconVolumeOff } from '@tabler/icons-react'
+import { IconPlayerPauseFilled } from '@tabler/icons-react'
 import { useEffect, useRef } from 'react'
 import { formatTime } from '../../game/time'
 import { getElapsedTime, useGameStore } from '../../stores/useGameStore'

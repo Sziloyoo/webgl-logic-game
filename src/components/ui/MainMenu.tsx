@@ -1,4 +1,4 @@
-import { Anchor, Container, Group, Image, SimpleGrid, Stack, Text, Title, UnstyledButton } from '@mantine/core'
+import { Container, Group, Image, SimpleGrid, Stack, Text, Title, UnstyledButton } from '@mantine/core'
 import { IconCheck, IconLock, IconPlayerSkipForwardFilled } from '@tabler/icons-react'
 import type { ReactNode } from 'react'
 import { LEVELS } from '../../game/levels'
